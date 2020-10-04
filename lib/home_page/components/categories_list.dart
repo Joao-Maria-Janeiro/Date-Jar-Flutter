@@ -5,14 +5,16 @@ Widget categoriesList(List categories) {
       scrollDirection: Axis.horizontal,
       itemCount: categories.length,
       itemBuilder: (context, index) {
-        return InkWell(
-          child: Text(
-            categories[index].toString(),
-            style: TextStyle(color: Colors.white, fontSize: 36.0),
+        return Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          height: MediaQuery.of(context).size.height * 10,
+          child: InkWell(
+            child: Text(categories[index].toString(),
+                style: TextStyle(color: Colors.black, fontSize: 24.0)),
+            onTap: () {
+              print(categories[index].toString());
+            },
           ),
-          onTap: () {
-            print(categories[index].toString());
-          },
         );
       });
 }

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:date_jar/login_page/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'home_page/home_page.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: LoginPage(),
     );
   }
 }
