@@ -94,12 +94,18 @@ class GridDashboard extends StatelessWidget {
           children: myList.map((data) {
             return GestureDetector(
               onTap: () {
-                String title = data.title.replaceAll(" ", "_").toUpperCase();
+                String title = data.title
+                    .replaceAll(" ", "_")
+                    .replaceAll("-", "_")
+                    .toUpperCase();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => SubCategoryPage(
-                            subCategories: categoriesToSubCategories[title],
+                            subCategories:
+                                categoriesToSubCategories.containsKey(title)
+                                    ? categoriesToSubCategories[title]
+                                    : [],
                           )),
                 );
               },

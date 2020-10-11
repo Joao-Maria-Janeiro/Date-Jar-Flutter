@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/home_page.dart';
 import 'package:date_jar/login_page/components/background.dart';
+import 'package:date_jar/signup_page/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginState extends State<LoginPage> {
   String username;
   String password;
+  bool _obscurePassword = true;
   String baseUrl = 'http://192.168.1.18:8080/';
   final storage = new FlutterSecureStorage();
 
@@ -32,7 +34,7 @@ class _LoginState extends State<LoginPage> {
 
   void checkTokenPresentInStorage() async {
     if (await storage.containsKey(key: 'auth_token')) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyHomePage()),
       );
@@ -40,11 +42,18 @@ class _LoginState extends State<LoginPage> {
   }
 
   Future<bool> login() async {
-    var res = await http.post(baseUrl + 'users/authenticate',
-        body: jsonEncode({'username': username, 'password': password}));
-    if (res.body.isNotEmpty) {
-      await storage.write(key: 'auth_token', value: res.body);
-      return true;
+    if (username.isNotEmpty && password.isNotEmpty) {
+      var res = await http.post(baseUrl + 'users/authenticate',
+          body: jsonEncode({'username': username, 'password': password}));
+      if (res.body.isNotEmpty &&
+          res.body != "Username and password didn't match") {
+        var jsonResponse = json.decode(res.body);
+        await storage.write(key: 'auth_token', value: jsonResponse["token"]);
+        await storage.write(key: 'picture', value: jsonResponse["picture"]);
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
@@ -90,13 +99,22 @@ class _LoginState extends State<LoginPage> {
                       password = value;
                     });
                   },
-                  obscureText: true,
+                  obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     hintText: "Password",
                     icon: Icon(Icons.lock, color: primaryColor),
-                    suffixIcon: Icon(
-                      Icons.visibility,
-                      color: primaryColor,
+                    suffixIcon: GestureDetector(
+                      child: Icon(
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: primaryColor,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
                     ),
                     border: InputBorder.none,
                   ),
@@ -137,7 +155,12 @@ class _LoginState extends State<LoginPage> {
                     style: TextStyle(color: primaryColor),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignupPage()),
+                      );
+                    },
                     child: Text(
                       "Sign Up",
                       style: TextStyle(
