@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
+import 'package:date_jar/create_activity_page/create_activity_page.dart';
+import 'package:date_jar/create_category_page/create_category_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class SubCategoryPage extends StatefulWidget {
   List<dynamic> subCategories;
@@ -24,7 +27,6 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     super.initState();
     getProfilePic();
     print(widget.subCategories);
-    widget.subCategories;
   }
 
   @override
@@ -47,6 +49,20 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    widget.subCategories = [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4",
+      "Test 5",
+      "Test 6",
+      "Test 7",
+      "Test 8",
+      "Test 9",
+      "Test 10",
+      "Test 11",
+      "Test 12"
+    ];
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -99,6 +115,35 @@ class _subCategoryPageState extends State<SubCategoryPage> {
               ],
             ),
           ))
+        ],
+      ),
+      floatingActionButton: SpeedDial(
+        child: Icon(Icons.add),
+        elevation: 15,
+        children: [
+          SpeedDialChild(
+              child: Icon(Icons.article_outlined),
+              label: "Add Category",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateCategoryPage()),
+                );
+              }),
+          SpeedDialChild(
+              child: Icon(Icons.star),
+              label: "Add Activity",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateActivityPage(
+                            subCategories: widget.subCategories.isNotEmpty
+                                ? widget.subCategories
+                                : [],
+                          )),
+                );
+              }),
         ],
       ),
     );

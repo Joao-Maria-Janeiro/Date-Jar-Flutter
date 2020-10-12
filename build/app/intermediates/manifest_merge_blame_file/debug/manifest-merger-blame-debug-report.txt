@@ -36,7 +36,7 @@
 27        android:debuggable="true"
 28        android:icon="@mipmap/ic_launcher"
 28-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:11:9-43
-29        android:label="date_jar" >
+29        android:label="Date Jar" >
 29-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:10:9-33
 30        <activity
 30-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:12:9-40:20

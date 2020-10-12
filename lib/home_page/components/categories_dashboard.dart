@@ -6,58 +6,58 @@ class GridDashboard extends StatelessWidget {
       title: "Dinning",
       subtitle: "March, Wednesday",
       event: "3 Events",
-      img: "assets/images/calendar.png");
+      img: "assets/icons/icons8-dining-room-100.png");
 
   Items item2 = new Items(
     title: "Travel",
     subtitle: "Bocali, Apple",
     event: "4 Items",
-    img: "assets/images/calendar.png",
+    img: "assets/icons/icons8-airport-100.png",
   );
   Items item3 = new Items(
     title: "Sports",
     subtitle: "Lucy Mao going to Office",
     event: "",
-    img: "assets/images/calendar.png",
+    img: "assets/icons/icons8-soccer-ball-100.png",
   );
   Items item4 = new Items(
     title: "Cultural",
     subtitle: "Rose favirited your Post",
     event: "",
-    img: "assets/images/calendar.png",
+    img: "assets/icons/icons8-theatre-mask-100.png",
   );
   Items item5 = new Items(
     title: "Adventure",
     subtitle: "Homework, Design",
     event: "4 Items",
-    img: "assets/images/calendar.png",
+    img: "assets/icons/icons8-adventure-100.png",
   );
   Items item6 = new Items(
     title: "Alternative",
     subtitle: "",
     event: "2 Items",
-    img: "assets/images/calendar.png",
+    img: "assets/icons/icons8-dice-100.png",
   );
   Items item7 = new Items(
     title: "Double Date",
     subtitle: "Rose favirited your Post",
     event: "",
-    img: "assets/images/calendar.png",
+    img: "assets/icons/icons8-conference-100.png",
   );
   Items item8 = new Items(
     title: "Stay-at-home",
     subtitle: "Rose favirited your Post",
     event: "",
-    img: "assets/images/calendar.png",
+    img: "assets/icons/icons8-home-page-100.png",
   );
   Items item9 = new Items(
-    title: "Night Out",
+    title: "Party",
     subtitle: "Rose favirited your Post",
     event: "",
-    img: "assets/images/calendar.png",
+    img: "assets/icons/icons8-party-100.png",
   );
   Items item10 = new Items(
-    title: "Kinky",
+    title: "Ads",
     subtitle: "Rose favirited your Post",
     event: "",
     img: "assets/images/calendar.png",
@@ -118,10 +118,10 @@ class GridDashboard extends StatelessWidget {
                   children: <Widget>[
                     Image.asset(
                       data.img,
-                      height: 115,
+                      height: 70,
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 15,
                     ),
                     Text(
                       data.title,
