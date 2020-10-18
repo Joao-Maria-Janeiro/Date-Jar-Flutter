@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:date_jar/create_activity_page/create_activity_page.dart';
 import 'package:date_jar/create_category_page/create_category_page.dart';
+import 'package:date_jar/edit_sub_category_page/edit_sub_category_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -11,8 +12,10 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class SubCategoryPage extends StatefulWidget {
   List<dynamic> subCategories;
+  String categoryType;
 
-  SubCategoryPage({Key key, this.subCategories}) : super(key: key);
+  SubCategoryPage({Key key, this.subCategories, this.categoryType})
+      : super(key: key);
 
   @override
   _subCategoryPageState createState() => _subCategoryPageState();
@@ -27,6 +30,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     super.initState();
     getProfilePic();
     print(widget.subCategories);
+    print(widget.categoryType);
   }
 
   @override
@@ -49,20 +53,20 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    widget.subCategories = [
-      "Test 1",
-      "Test 2",
-      "Test 3",
-      "Test 4",
-      "Test 5",
-      "Test 6",
-      "Test 7",
-      "Test 8",
-      "Test 9",
-      "Test 10",
-      "Test 11",
-      "Test 12"
-    ];
+//    widget.subCategories = [
+//      "Test 1",
+//      "Test 2",
+//      "Test 3",
+//      "Test 4",
+//      "Test 5",
+//      "Test 6",
+//      "Test 7",
+//      "Test 8",
+//      "Test 9",
+//      "Test 10",
+//      "Test 11",
+//      "Test 12"
+//    ];
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -127,7 +131,10 @@ class _subCategoryPageState extends State<SubCategoryPage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CreateCategoryPage()),
+                  MaterialPageRoute(
+                      builder: (context) => CreateCategoryPage(
+                            categoryType: widget.categoryType,
+                          )),
                 );
               }),
           SpeedDialChild(
@@ -202,7 +209,15 @@ class _subCategoryPageState extends State<SubCategoryPage> {
         IconSlideAction(
           color: Colors.white,
           icon: Icons.edit,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EditSubCategoryPage(
+                        categoryName: title,
+                      )),
+            );
+          },
         ),
         IconSlideAction(
           color: Colors.white,

@@ -5,25 +5,28 @@ import 'package:date_jar/home_page/home_page.dart';
 import 'package:date_jar/login_page/components/background.dart';
 import 'package:date_jar/signup_page/signup_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CreateCategoryPage extends StatefulWidget {
+  String categoryType;
+
+  CreateCategoryPage({Key key, this.categoryType}) : super(key: key);
+
   @override
   _CreateCategoryState createState() => _CreateCategoryState();
 }
 
 class _CreateCategoryState extends State<CreateCategoryPage> {
-  String username;
-  String password;
-  bool _obscurePassword = true;
+  String categoryName;
   String baseUrl = 'http://192.168.1.18:8080/';
   final storage = new FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
+    print(widget.categoryType);
   }
 
   @override
@@ -31,15 +34,13 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
     super.dispose();
   }
 
-  Future<bool> login() async {
-    if (username.isNotEmpty && password.isNotEmpty) {
-      var res = await http.post(baseUrl + 'users/authenticate',
-          body: jsonEncode({'username': username, 'password': password}));
-      if (res.body.isNotEmpty &&
-          res.body != "Username and password didn't match") {
-        var jsonResponse = json.decode(res.body);
-        await storage.write(key: 'auth_token', value: jsonResponse["token"]);
-        await storage.write(key: 'picture', value: jsonResponse["picture"]);
+  Future<bool> createCategory() async {
+    if (categoryName.isNotEmpty) {
+      String authToken = await storage.read(key: 'auth_token');
+      var res = await http.post(baseUrl + 'categories/add',
+          body: jsonEncode(
+              {'title': categoryName, 'type': widget.categoryType}), headers: {'Authorization': 'Bearer ' + authToken});
+      if (res.body.isNotEmpty && !res.body.contains("error")) {
         return true;
       } else {
         return false;
@@ -71,7 +72,7 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
                 child: TextField(
                   onChanged: (value) {
                     setState(() {
-                      username = value;
+                      categoryName = value;
                     });
                   },
                   decoration: InputDecoration(
@@ -91,8 +92,8 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                     color: primaryColor,
                     onPressed: () async {
-                      bool gotAuthToken = await login();
-                      if (gotAuthToken) {
+                      bool createdCategory = await createCategory();
+                      if (createdCategory) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => MyHomePage()),

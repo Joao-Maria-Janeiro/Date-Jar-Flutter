@@ -37,24 +37,22 @@ class _CreateActivityState extends State<CreateActivityPage> {
     super.dispose();
   }
 
-//
-//  Future<bool> login() async {
-//    if (username.isNotEmpty && password.isNotEmpty) {
-//      var res = await http.post(baseUrl + 'users/authenticate',
-//          body: jsonEncode({'username': username, 'password': password}));
-//      if (res.body.isNotEmpty &&
-//          res.body != "Username and password didn't match") {
-//        var jsonResponse = json.decode(res.body);
-//        await storage.write(key: 'auth_token', value: jsonResponse["token"]);
-//        await storage.write(key: 'picture', value: jsonResponse["picture"]);
-//        return true;
-//      } else {
-//        return false;
-//      }
-//    } else {
-//      return false;
-//    }
-//  }
+  Future<bool> createActivity() async {
+    if (activityName.isNotEmpty) {
+      String authToken = await storage.read(key: 'auth_token');
+      var res = await http.post(baseUrl + 'activities/add',
+          body: jsonEncode(
+              {'activity_name': activityName, 'category_name': _selectedItem}),
+          headers: {'Authorization': 'Bearer ' + authToken});
+      if (res.body.isNotEmpty && !res.body.contains("error")) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   List<DropdownMenuItem<String>> buildDropDownMenuItems(List listItems) {
     List<DropdownMenuItem<String>> items = List();
@@ -136,13 +134,13 @@ class _CreateActivityState extends State<CreateActivityPage> {
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                     color: primaryColor,
                     onPressed: () async {
-//                      bool gotAuthToken = await login();
-//                      if (gotAuthToken) {
-//                        Navigator.push(
-//                          context,
-//                          MaterialPageRoute(builder: (context) => MyHomePage()),
-//                        );
-//                      }
+                      bool createdActivity = await createActivity();
+                      if (createdActivity) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                        );
+                      }
                     },
                     child: Text(
                       "Create Activity",

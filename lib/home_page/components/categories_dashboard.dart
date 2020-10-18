@@ -45,7 +45,7 @@ class GridDashboard extends StatelessWidget {
     img: "assets/icons/icons8-conference-100.png",
   );
   Items item8 = new Items(
-    title: "Stay-at-home",
+    title: "Stay at home",
     subtitle: "Rose favirited your Post",
     event: "",
     img: "assets/icons/icons8-home-page-100.png",
@@ -106,6 +106,7 @@ class GridDashboard extends StatelessWidget {
                                 categoriesToSubCategories.containsKey(title)
                                     ? categoriesToSubCategories[title]
                                     : [],
+                            categoryType: title,
                           )),
                 );
               },
