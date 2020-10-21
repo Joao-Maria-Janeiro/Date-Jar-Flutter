@@ -9,6 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -61,8 +62,11 @@ class _SignupState extends State<SignupPage> {
           'username': username,
           'password': password,
           'email': email,
-          'picture':
-              _image == null ? '' : base64Encode(_image.readAsBytesSync())
+          'picture': _image == null
+              ? ''
+              : base64Encode(await FlutterImageCompress.compressWithFile(
+                  _image.path,
+                  quality: 20))
         }));
     if (res.body.isNotEmpty && res.body.contains("{")) {
       var jsonResponse = json.decode(res.body);

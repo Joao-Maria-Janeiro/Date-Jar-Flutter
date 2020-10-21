@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:date_jar/create_activity_page/create_activity_page.dart';
 import 'package:date_jar/create_category_page/create_category_page.dart';
 import 'package:date_jar/edit_sub_category_page/edit_sub_category_page.dart';
+import 'package:date_jar/home_page/components/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -29,8 +30,6 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   void initState() {
     super.initState();
     getProfilePic();
-    print(widget.subCategories);
-    print(widget.categoryType);
   }
 
   @override
@@ -50,61 +49,24 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     }
   }
 
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-//    widget.subCategories = [
-//      "Test 1",
-//      "Test 2",
-//      "Test 3",
-//      "Test 4",
-//      "Test 5",
-//      "Test 6",
-//      "Test 7",
-//      "Test 8",
-//      "Test 9",
-//      "Test 10",
-//      "Test 11",
-//      "Test 12"
-//    ];
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Container(
-            height: size.height * .3,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  alignment: Alignment.topCenter,
-                  image: AssetImage('assets/images/top_header.png')),
-            ),
-          ),
+          pageTitle(capitalize(widget.categoryType
+              .toLowerCase()
+              .replaceAll("-", " ")
+              .replaceAll("_", " "))),
+          profilePic(picture),
           SafeArea(
               child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
             child: Column(
               children: [
-                Container(
-                  height: 64,
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 32,
-                        backgroundImage: picture == null
-                            ? Image.network(
-                                    "https://img.icons8.com/pastel-glyph/2x/person-male.png")
-                                .image
-                            : picture.image,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                    ],
-                  ),
-                ),
                 Expanded(
                   child: new ListView.builder(
                       itemCount: widget.subCategories.length,
@@ -148,6 +110,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                             subCategories: widget.subCategories.isNotEmpty
                                 ? widget.subCategories
                                 : [],
+                            categoryType: widget.categoryType,
                           )),
                 );
               }),
@@ -170,7 +133,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
           child: Card(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            elevation: 10,
+            elevation: 3,
             child: Row(
               children: [
                 Container(
@@ -188,7 +151,10 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(color: Colors.black, fontSize: 18),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontFamily: 'Montserrat'),
                     ),
                   ],
                 ),
@@ -215,6 +181,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
               MaterialPageRoute(
                   builder: (context) => EditSubCategoryPage(
                         categoryName: title,
+                        categoryType: widget.categoryType,
                       )),
             );
           },

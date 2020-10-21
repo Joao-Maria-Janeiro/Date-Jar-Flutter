@@ -38,8 +38,9 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
     if (categoryName.isNotEmpty) {
       String authToken = await storage.read(key: 'auth_token');
       var res = await http.post(baseUrl + 'categories/add',
-          body: jsonEncode(
-              {'title': categoryName, 'type': widget.categoryType}), headers: {'Authorization': 'Bearer ' + authToken});
+          body:
+              jsonEncode({'title': categoryName, 'type': widget.categoryType}),
+          headers: {'Authorization': 'Bearer ' + authToken});
       if (res.body.isNotEmpty && !res.body.contains("error")) {
         return true;
       } else {

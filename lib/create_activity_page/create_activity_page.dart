@@ -11,8 +11,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CreateActivityPage extends StatefulWidget {
   List<dynamic> subCategories;
+  String categoryType;
 
-  CreateActivityPage({Key key, this.subCategories}) : super(key: key);
+  CreateActivityPage({Key key, this.subCategories, this.categoryType})
+      : super(key: key);
 
   @override
   _CreateActivityState createState() => _CreateActivityState();
@@ -24,6 +26,7 @@ class _CreateActivityState extends State<CreateActivityPage> {
   List<DropdownMenuItem<String>> _dropdownMenuItems;
   String _selectedItem;
   String activityName;
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -41,12 +44,24 @@ class _CreateActivityState extends State<CreateActivityPage> {
     if (activityName.isNotEmpty) {
       String authToken = await storage.read(key: 'auth_token');
       var res = await http.post(baseUrl + 'activities/add',
-          body: jsonEncode(
-              {'activity_name': activityName, 'category_name': _selectedItem}),
+          body: jsonEncode({
+            'activity_name': activityName,
+            'category_name': _selectedItem,
+            'category_type': widget.categoryType
+          }),
           headers: {'Authorization': 'Bearer ' + authToken});
       if (res.body.isNotEmpty && !res.body.contains("error")) {
+        if (res.body != "Activity created successfuly") {
+          setState(() {
+            errorMessage = res.body;
+          });
+          return false;
+        }
         return true;
       } else {
+        setState(() {
+          errorMessage = "There was an error creating your activity";
+        });
         return false;
       }
     } else {
@@ -147,6 +162,12 @@ class _CreateActivityState extends State<CreateActivityPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
+                ),
+              ),
+              Text(
+                errorMessage,
+                style: TextStyle(
+                  color: Colors.red,
                 ),
               ),
             ],

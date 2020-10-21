@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:math' as math;
 
 import 'package:date_jar/constants.dart';
+import 'package:date_jar/home_page/components/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -11,8 +12,10 @@ import 'package:http/http.dart' as http;
 
 class EditSubCategoryPage extends StatefulWidget {
   String categoryName;
+  String categoryType;
 
-  EditSubCategoryPage({Key key, this.categoryName}) : super(key: key);
+  EditSubCategoryPage({Key key, this.categoryName, this.categoryType})
+      : super(key: key);
 
   @override
   _EditSubCategoryPageState createState() => _EditSubCategoryPageState();
@@ -22,16 +25,19 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   String baseUrl = 'http://192.168.1.18:8080/';
   List<String> activities = [];
   final storage = new FlutterSecureStorage();
+  String authToken;
   Image picture;
-
+  String errorMessage = '';
+  GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
   List<bool> editName = [];
+  bool editCategoryName = false;
+  Tween<Offset> offset = Tween(begin: Offset(1, 0), end: Offset(0, 0));
 
   @override
   void initState() {
     super.initState();
     getData();
     getProfilePic();
-    print(widget.categoryName);
   }
 
   @override
@@ -40,18 +46,26 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   }
 
   void getData() async {
-    String authToken = await storage.read(key: 'auth_token');
+    authToken = await storage.read(key: 'auth_token');
     var res = await http.get(
-        baseUrl + 'activities/category/' + widget.categoryName,
+        baseUrl +
+            'activities/category/' +
+            widget.categoryName +
+            "/type/" +
+            widget.categoryType,
         headers: {'Authorization': 'Bearer ' + authToken});
     setState(() {
       List auxActivities = json.decode(res.body);
+      Future ft = Future(() {});
       auxActivities.forEach((activity) {
-        activities.add(activity["name"]);
+        ft = ft.then((_) {
+          return Future.delayed(const Duration(milliseconds: 100), () {
+            activities.add(activity["name"]);
+            animatedListKey.currentState.insertItem(activities.length - 1);
+          });
+        });
         editName.add(false);
       });
-      print(activities);
-      print(editName);
     });
   }
 
@@ -67,6 +81,59 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
     }
   }
 
+  Future<bool> updateActivity(
+      String oldActivityName, String newActivityName) async {
+    print(baseUrl +
+        'activities/category/' +
+        widget.categoryName +
+        "/type/" +
+        widget.categoryType +
+        "/activity");
+    print(oldActivityName);
+    print(newActivityName);
+    var res = await http.post(
+        baseUrl +
+            'activities/category/' +
+            widget.categoryName +
+            "/type/" +
+            widget.categoryType +
+            "/activity",
+        body: jsonEncode({
+          'new_activity_name': newActivityName,
+          'old_activity_name': oldActivityName
+        }),
+        headers: {'Authorization': 'Bearer ' + authToken});
+    print(res.body);
+    if (res.body != "Success") {
+      setState(() {
+        errorMessage =
+            "There was an error updating your activity name, please try again";
+      });
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  Future<bool> deleteActivity(String activityName) async {
+    var res = await http.post(baseUrl + 'activities/delete',
+        body: jsonEncode({
+          'activity_name': activityName,
+          'category_name': widget.categoryName,
+          'category_type': widget.categoryType
+        }),
+        headers: {'Authorization': 'Bearer ' + authToken});
+    if (res.body != "Activity deleted successfuly") {
+      setState(() {
+        errorMessage =
+            "There was an error delete your activity, please try again";
+      });
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -74,140 +141,189 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Container(
-            height: size.height * .3,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  alignment: Alignment.topCenter,
-                  image: AssetImage('assets/images/top_header.png')),
-            ),
-          ),
+//          editCategoryName
+//              ?
+          pageTitle(widget.categoryName),
+//              : Positioned(
+//                  left: 0,
+//                  top: 0,
+//                  child: Container(
+//                    height: 64,
+//                    margin: EdgeInsets.only(bottom: 20, top: 60, left: 16),
+//                    child: Row(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: <Widget>[
+//                        TextField(
+//                          onChanged: (value) {
+//                            widget.categoryName = value;
+//                          },
+//                          decoration: InputDecoration(
+//                            hintText: widget.categoryName,
+//                          ),
+//                        ),
+//                        SizedBox(
+//                          width: 16,
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+//                ),
+          profilePic(picture),
           SafeArea(
               child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
             child: Column(
               children: [
-                Container(
-                  height: 64,
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 32,
-                        backgroundImage: picture == null
-                            ? Image.network(
-                                    "https://img.icons8.com/pastel-glyph/2x/person-male.png")
-                                .image
-                            : picture.image,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                    ],
-                  ),
-                ),
                 Expanded(
-                  child: ListView.builder(
-                      itemCount: activities.length,
-                      itemBuilder: (BuildContext ctxt, int index) {
+                  child: AnimatedList(
+                      key: animatedListKey,
+                      initialItemCount: activities.length,
+                      itemBuilder: (BuildContext ctxt, int index, animation) {
                         Color color = Color(
                                 (math.Random().nextDouble() * 0xFFFFFF).toInt())
                             .withOpacity(1.0);
-                        return Container(
-                          height: 80,
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            elevation: 10,
-                            child: Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
-                                  height: 25,
-                                  width: 25,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                      border:
-                                          Border.all(color: color, width: 4)),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    (editName.isEmpty ? false : editName[index])
-                                        ? Container(
-                                            child: TextField(
-                                              onChanged: (value) {},
-                                              decoration: InputDecoration(
-                                                  hintText: activities[index]),
+                        String newActivityName = '';
+                        return SlideTransition(
+                          position: animation.drive(offset),
+                          child: Container(
+                            height: 80,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              elevation: 3,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                        border:
+                                            Border.all(color: color, width: 4)),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      (editName.isEmpty
+                                              ? false
+                                              : editName[index])
+                                          ? Container(
+                                              child: TextField(
+                                                textInputAction:
+                                                    TextInputAction.unspecified,
+                                                onChanged: (value) {
+                                                  if (value.isNotEmpty) {
+                                                    newActivityName = value;
+                                                  }
+                                                },
+                                                decoration: InputDecoration(
+                                                    hintText:
+                                                        activities[index]),
+                                              ),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3,
+                                            )
+                                          : Text(
+                                              activities[index],
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                  fontFamily: 'Montserrat'),
                                             ),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.3,
-                                          )
-                                        : Text(
-                                            activities[index],
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18),
-                                          ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      child: (editName.isEmpty
-                                              ? false
-                                              : editName[index])
-                                          ? Icon(Icons.check)
-                                          : Icon(Icons.edit),
-                                      onTap: () {
-                                        setState(() {
-                                          editName[index] = !editName[index];
-                                        });
-                                      },
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      child: (editName.isEmpty
-                                              ? false
-                                              : editName[index])
-                                          ? Icon(Icons.clear)
-                                          : Icon(Icons.delete),
-                                      onTap: () {
-                                        setState(() {
-                                          editName[index] = false;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: Container(),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        child: (editName.isEmpty
+                                                ? false
+                                                : editName[index])
+                                            ? Icon(Icons.check)
+                                            : Icon(Icons.edit),
+                                        onTap: () async {
+                                          bool updatedSuccessfully = false;
+                                          if (editName[index]) {
+                                            updatedSuccessfully =
+                                                await updateActivity(
+                                                    activities[index],
+                                                    newActivityName);
+                                          }
+                                          setState(() {
+                                            if (updatedSuccessfully) {
+                                              activities[index] =
+                                                  newActivityName;
+                                            }
+                                            editName[index] = !editName[index];
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        child: (editName.isEmpty
+                                                ? false
+                                                : editName[index])
+                                            ? Icon(Icons.clear)
+                                            : Icon(Icons.delete),
+                                        onTap: () async {
+                                          bool removedActivity = false;
+                                          if (!editName[index]) {
+                                            removedActivity =
+                                                await deleteActivity(
+                                                    activities[index]);
+                                          }
+                                          setState(() {
+                                            if (editName[index]) {
+                                              editName[index] = false;
+                                            } else {
+                                              if (removedActivity) {
+                                                AnimatedList.of(ctxt).removeItem(
+                                                    index,
+                                                    (context, animation) =>
+                                                        _buildItem(
+                                                            ctxt,
+                                                            animation,
+                                                            index,
+                                                            newActivityName));
+                                                // activities.removeAt(index);
+                                              }
+                                            }
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -215,30 +331,141 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
                 ),
               ],
             ),
-          ))
+          )),
+          Positioned(
+            bottom: 0,
+            child: Text(
+              errorMessage,
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  AppBar buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      leading: IconButton(
-        padding: EdgeInsets.only(left: 20.0),
-        icon: Icon(Icons.menu),
-        color: primaryColor,
-        onPressed: () {},
-      ),
-      actions: <Widget>[
-        IconButton(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          icon: Icon(Icons.person),
-          color: primaryColor,
-          onPressed: () {},
+  Widget _buildItem(BuildContext ctxt, Animation animation, int index,
+      String newActivityName) {
+    Color color =
+        Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    return SlideTransition(
+      position: animation.drive(offset),
+      child: Container(
+        height: 80,
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          elevation: 3,
+          child: Row(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                height: 25,
+                width: 25,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: color, width: 4)),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  (editName.isEmpty ? false : editName[index])
+                      ? Container(
+                          child: TextField(
+                            onChanged: (value) {
+                              newActivityName = value;
+                            },
+                            decoration:
+                                InputDecoration(hintText: activities[index]),
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.3,
+                        )
+                      : Text(
+                          activities[index],
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontFamily: 'Montserrat'),
+                        ),
+                ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    child: (editName.isEmpty ? false : editName[index])
+                        ? Icon(Icons.check)
+                        : Icon(Icons.edit),
+                    onTap: () async {
+                      bool updatedSuccessfully = false;
+                      if (editName[index]) {
+                        updatedSuccessfully = await updateActivity(
+                            activities[index], newActivityName);
+                      }
+                      setState(() {
+                        if (updatedSuccessfully) {
+                          activities[index] = newActivityName;
+                        }
+                        editName[index] = !editName[index];
+                      });
+                    },
+                  )
+                ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    child: (editName.isEmpty ? false : editName[index])
+                        ? Icon(Icons.clear)
+                        : Icon(Icons.delete),
+                    onTap: () async {
+                      bool removedActivity = false;
+                      if (!editName[index]) {
+                        removedActivity =
+                            await deleteActivity(activities[index]);
+                      }
+                      setState(() {
+                        if (editName[index]) {
+                          editName[index] = false;
+                        } else {
+                          if (removedActivity) {
+                            activities.removeAt(index);
+                            AnimatedList.of(ctxt).removeItem(
+                                index,
+                                (context, animation) => SizedBox(
+                                      width: 0,
+                                      height: 0,
+                                    ));
+                          }
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+            ],
+          ),
         ),
-      ],
+      ),
     );
   }
 }

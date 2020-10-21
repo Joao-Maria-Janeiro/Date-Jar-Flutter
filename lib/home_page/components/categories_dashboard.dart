@@ -113,7 +113,7 @@ class GridDashboard extends StatelessWidget {
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
+                elevation: 2,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -126,6 +126,9 @@ class GridDashboard extends StatelessWidget {
                     ),
                     Text(
                       data.title,
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                      ),
                     ),
                   ],
                 ),
