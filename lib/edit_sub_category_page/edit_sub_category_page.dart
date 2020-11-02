@@ -83,14 +83,6 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
 
   Future<bool> updateActivity(
       String oldActivityName, String newActivityName) async {
-    print(baseUrl +
-        'activities/category/' +
-        widget.categoryName +
-        "/type/" +
-        widget.categoryType +
-        "/activity");
-    print(oldActivityName);
-    print(newActivityName);
     var res = await http.post(
         baseUrl +
             'activities/category/' +
@@ -103,7 +95,6 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
           'old_activity_name': oldActivityName
         }),
         headers: {'Authorization': 'Bearer ' + authToken});
-    print(res.body);
     if (res.body != "Success") {
       setState(() {
         errorMessage =

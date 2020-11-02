@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget pageTitle(String title) {
   return Positioned(
-    left: 16,
+    left: 20,
     top: 0,
     child: Container(
       height: 64,
