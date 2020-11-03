@@ -25,6 +25,7 @@ class SubCategoryPage extends StatefulWidget {
 class _subCategoryPageState extends State<SubCategoryPage> {
   final storage = new FlutterSecureStorage();
   Image picture;
+  bool activityPop = false;
 
   @override
   void initState() {
@@ -80,7 +81,57 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                 ),
               ],
             ),
-          ))
+          )),
+          Container(
+            child: (activityPop == true)
+                ? InkWell(
+                    onTap: closeTaskPop,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black.withOpacity(0.3),
+                      child: Center(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                color: Colors.white),
+                            height: MediaQuery.of(context).size.height * 0.3,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(
+                                  height: 1,
+                                ),
+                                Text("Random Activity Name"),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Draw"),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.1,
+                                    ),
+                                    Text("Take"),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.1,
+                                    ),
+                                    Text("Delete"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
+          ),
         ],
       ),
       floatingActionButton: SpeedDial(
@@ -119,6 +170,16 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     );
   }
 
+  openTaskPop() {
+    activityPop = true;
+    setState(() {});
+  }
+
+  closeTaskPop() {
+    activityPop = false;
+    setState(() {});
+  }
+
   Slidable taskWidget(Color color, String title) {
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
@@ -126,6 +187,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
       child: GestureDetector(
         onTap: () {
           print(title);
+          openTaskPop();
         },
         child: Container(
           height: 80,
