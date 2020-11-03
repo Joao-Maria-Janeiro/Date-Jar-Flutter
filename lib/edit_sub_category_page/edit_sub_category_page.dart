@@ -132,33 +132,92 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-//          editCategoryName
-//              ?
-          pageTitle(widget.categoryName),
-//              : Positioned(
-//                  left: 0,
-//                  top: 0,
-//                  child: Container(
-//                    height: 64,
-//                    margin: EdgeInsets.only(bottom: 20, top: 60, left: 16),
-//                    child: Row(
-//                      crossAxisAlignment: CrossAxisAlignment.start,
-//                      children: <Widget>[
-//                        TextField(
-//                          onChanged: (value) {
-//                            widget.categoryName = value;
-//                          },
-//                          decoration: InputDecoration(
-//                            hintText: widget.categoryName,
-//                          ),
-//                        ),
-//                        SizedBox(
-//                          width: 16,
-//                        ),
-//                      ],
-//                    ),
-//                  ),
-//                ),
+          Container(
+            child: !editCategoryName
+                ? Positioned(
+                    left: 20,
+                    child: Row(
+                      children: [
+                        pageTitle(
+                          widget.categoryName,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              editCategoryName = !editCategoryName;
+                            });
+                          },
+                          child: Icon(
+                            Icons.edit,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Positioned(
+                    left: 20,
+                    top: 0,
+                    child: Container(
+                      height: 64,
+                      margin: EdgeInsets.only(bottom: 20, top: 60, left: 16),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: TextField(
+                              onChanged: (value) {
+                                widget.categoryName = value;
+                              },
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                              ),
+                              decoration: InputDecoration(
+                                hintText: widget.categoryName,
+                              ),
+                            ),
+                            width: MediaQuery.of(context).size.width * 0.3,
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    editCategoryName = !editCategoryName;
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.check,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    editCategoryName = !editCategoryName;
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.clear,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+          ),
           profilePic(picture),
           SafeArea(
               child: Padding(

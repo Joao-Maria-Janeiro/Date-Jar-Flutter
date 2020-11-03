@@ -106,21 +106,42 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                                 SizedBox(
                                   height: 1,
                                 ),
-                                Text("Random Activity Name"),
+                                Text(
+                                  "Random Activity Name",
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 15,
+                                  ),
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("Draw"),
+                                    Text(
+                                      "Draw",
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                      ),
+                                    ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.1,
                                     ),
-                                    Text("Take"),
+                                    Text(
+                                      "Take",
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                      ),
+                                    ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.1,
                                     ),
-                                    Text("Delete"),
+                                    Text(
+                                      "Delete",
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],

@@ -12,14 +12,14 @@
 12         to allow setting breakpoints, to provide hot reload, etc.
 13    -->
 14    <uses-permission android:name="android.permission.INTERNET" />
-14-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml:6:5-66
-14-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml:6:22-64
+14-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml:6:5-66
+14-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml:6:22-64
 15    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-15-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-80
-15-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:7:22-77
+15-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-80
+15-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:7:22-77
 16    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-16-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-81
-16-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:8:22-78
+16-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-81
+16-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:8:22-78
 17    <!--
 18 io.flutter.app.FlutterApplication is an android.app.Application that
 19         calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -28,30 +28,30 @@
 22         FlutterApplication and put your custom class here.
 23    -->
 24    <application
-24-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:8:5-50:19
+24-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:8:5-50:19
 25        android:name="io.flutter.app.FlutterApplication"
-25-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:9:9-57
+25-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:9:9-57
 26        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-26-->[androidx.core:core:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/a528b13ac93e64cafa3d0480e2c93207/core-1.1.0/AndroidManifest.xml:24:18-86
+26-->[androidx.core:core:1.1.0] /home/joaomariajaneiro/.gradle/caches/transforms-2/files-2.1/a528b13ac93e64cafa3d0480e2c93207/core-1.1.0/AndroidManifest.xml:24:18-86
 27        android:debuggable="true"
 28        android:icon="@mipmap/ic_launcher"
-28-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:11:9-43
+28-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:11:9-43
 29        android:label="Date Jar" >
-29-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:10:9-33
+29-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:10:9-33
 30        <activity
-30-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:12:9-40:20
+30-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:12:9-40:20
 31            android:name="com.example.date_jar.MainActivity"
-31-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:13:13-41
+31-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:13:13-41
 32            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-32-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:16:13-163
+32-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:16:13-163
 33            android:hardwareAccelerated="true"
-33-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:17:13-47
+33-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:17:13-47
 34            android:launchMode="singleTop"
-34-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:14:13-43
+34-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:14:13-43
 35            android:theme="@style/LaunchTheme"
-35-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:15:13-47
+35-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:15:13-47
 36            android:windowSoftInputMode="adjustResize" >
-36-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:18:13-55
+36-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:18:13-55
 37
 38            <!--
 39                 Specifies an Android theme to apply to this Activity as soon as
@@ -60,11 +60,11 @@
 42                 to determine the Window background behind the Flutter UI.
 43            -->
 44            <meta-data
-44-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:23:13-26:17
+44-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:23:13-26:17
 45                android:name="io.flutter.embedding.android.NormalTheme"
-45-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:24:15-70
+45-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:24:15-70
 46                android:resource="@style/NormalTheme" />
-46-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:25:15-52
+46-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:25:15-52
 47            <!--
 48                 Displays an Android View that continues showing the launch screen
 49                 Drawable until Flutter paints its first frame, then this splash
@@ -73,58 +73,58 @@
 52                 Flutter's first frame.
 53            -->
 54            <meta-data
-54-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:32:13-35:17
+54-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:32:13-35:17
 55                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-55-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:33:15-79
+55-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:33:15-79
 56                android:resource="@drawable/launch_background" />
-56-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:34:15-61
+56-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:34:15-61
 57
 58            <intent-filter>
-58-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:36:13-39:29
+58-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:36:13-39:29
 59                <action android:name="android.intent.action.MAIN" />
-59-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:37:17-68
-59-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:37:25-66
+59-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:37:17-68
+59-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:37:25-66
 60
 61                <category android:name="android.intent.category.LAUNCHER" />
-61-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:38:17-76
-61-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:38:27-74
+61-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:38:17-76
+61-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:38:27-74
 62            </intent-filter>
 63        </activity>
 64        <activity
-64-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:41:9-44:75
+64-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:41:9-44:75
 65            android:name="com.yalantis.ucrop.UCropActivity"
-65-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:42:17-64
+65-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:42:17-64
 66            android:screenOrientation="portrait"
-66-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:43:17-53
+66-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:43:17-53
 67            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-67-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:44:17-73
+67-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:44:17-73
 68        <!--
 69             Don't delete the meta-data below.
 70             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
 71        -->
 72        <meta-data
-72-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:47:9-49:33
+72-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:47:9-49:33
 73            android:name="flutterEmbedding"
-73-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:48:13-44
+73-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:48:13-44
 74            android:value="2" />
-74-->/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:49:13-30
+74-->/home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:49:13-30
 75
 76        <provider
-76-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:9-19:20
+76-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:9-19:20
 77            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-77-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-82
+77-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-82
 78            android:authorities="com.example.date_jar.flutter.image_provider"
-78-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-74
+78-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-74
 79            android:exported="false"
-79-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-37
+79-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-37
 80            android:grantUriPermissions="true" >
-80-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-47
+80-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-47
 81            <meta-data
-81-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-18:75
+81-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-18:75
 82                android:name="android.support.FILE_PROVIDER_PATHS"
-82-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:17:17-67
+82-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:17:17-67
 83                android:resource="@xml/flutter_image_picker_file_paths" />
-83-->[:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:18:17-72
+83-->[:image_picker] /home/joaomariajaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:18:17-72
 84        </provider>
 85    </application>
 86
