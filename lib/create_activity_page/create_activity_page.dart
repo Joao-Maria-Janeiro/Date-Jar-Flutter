@@ -110,7 +110,7 @@ class _CreateActivityState extends State<CreateActivityPage> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.article_outlined, color: primaryColor),
+                    // Icon(Icons.article_outlined, color: primaryColor),
                     SizedBox(
                       width: size.width * 0.07,
                     ),

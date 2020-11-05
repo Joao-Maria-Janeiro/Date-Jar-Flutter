@@ -77,10 +77,10 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
                     });
                   },
                   decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.article_outlined,
-                        color: primaryColor,
-                      ),
+                      // icon: Icon(
+                      //   Icons.article_outlined,
+                      //   color: primaryColor,
+                      // ),
                       hintText: "Category Name"),
                 ),
               ),
