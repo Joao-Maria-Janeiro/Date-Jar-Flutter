@@ -263,7 +263,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                                                 0.05,
                                       ),
                                       Text(
-                                        "Delete",
+                                        "Remove",
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
                                         ),

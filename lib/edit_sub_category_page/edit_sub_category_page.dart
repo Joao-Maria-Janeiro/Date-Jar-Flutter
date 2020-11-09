@@ -4,6 +4,7 @@ import 'dart:math' as math;
 
 import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/components/header.dart';
+import 'package:date_jar/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +33,7 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   List<bool> editName = [];
   bool editCategoryName = false;
   Tween<Offset> offset = Tween(begin: Offset(1, 0), end: Offset(0, 0));
+  String newCategoryName = '';
 
   @override
   void initState() {
@@ -78,6 +80,29 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
           picture = new Image.memory(bytes);
         });
       }
+    }
+  }
+
+  Future<bool> updateCategoryName(String newCategoryName) async {
+    var res = await http.post(
+        baseUrl +
+            'categories/edit/' +
+            widget.categoryName +
+            "/type/" +
+            widget.categoryType,
+        body: jsonEncode({'new_category_name': newCategoryName}),
+        headers: {'Authorization': 'Bearer ' + authToken});
+    if (res.body != "Success") {
+      setState(() {
+        errorMessage =
+            "There was an error updating your category name, please try again";
+      });
+      return false;
+    } else {
+      setState(() {
+        widget.categoryName = newCategoryName;
+      });
+      return true;
     }
   }
 
@@ -166,7 +191,7 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
                           Container(
                             child: TextField(
                               onChanged: (value) {
-                                widget.categoryName = value;
+                                newCategoryName = value;
                               },
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
@@ -184,10 +209,19 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    editCategoryName = !editCategoryName;
-                                  });
+                                onTap: () async {
+                                  bool updatedCategoryName =
+                                      await updateCategoryName(newCategoryName);
+                                  if (updatedCategoryName) {
+                                    setState(() {
+                                      editCategoryName = !editCategoryName;
+                                    });
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyHomePage()),
+                                    );
+                                  }
                                 },
                                 child: Icon(
                                   Icons.check,
