@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math' as math;
+import 'package:date_jar/model/Category.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 
@@ -13,11 +14,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:confetti/confetti.dart';
 
+import '../constants.dart';
+
 class SubCategoryPage extends StatefulWidget {
-  List<dynamic> subCategories;
+  List<dynamic> subCategoriesInput;
   String categoryType;
 
-  SubCategoryPage({Key key, this.subCategories, this.categoryType})
+  SubCategoryPage({Key key, this.subCategoriesInput, this.categoryType})
       : super(key: key);
 
   @override
@@ -26,18 +29,21 @@ class SubCategoryPage extends StatefulWidget {
 
 class _subCategoryPageState extends State<SubCategoryPage> {
   final storage = new FlutterSecureStorage();
+  List<Category> subcategories = [];
   Image picture;
   bool activityPop = false;
   ConfettiController _controllerCenter;
   String randomActivityName = '';
-  String currentCategoryOpened = '';
-  String baseUrl = 'http://192.168.1.18:8080/';
+  Category currentCategoryOpened;
   String errorMessage = '';
 
   @override
   void initState() {
     super.initState();
     getProfilePic();
+    subcategories = (widget.subCategoriesInput as List)
+        .map((category) => Category.fromJson(category))
+        .toList();
     _controllerCenter =
         ConfettiController(duration: const Duration(seconds: 5));
   }
@@ -60,17 +66,17 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     }
   }
 
-  Future<void> getRandomActivity(String categoryName) async {
+  Future<void> getRandomActivity(Category category) async {
     String authToken = await storage.read(key: 'auth_token');
     var res = await http.get(
-        baseUrl +
-            'activities/random/category/' +
-            categoryName +
-            "/type/" +
-            widget.categoryType,
+        baseUrl + 'activities/random/category/' + category.id.toString(),
         headers: {'Authorization': 'Bearer ' + authToken});
     setState(() {
-      randomActivityName = json.decode(res.body)['name'];
+      if (json.decode(res.body).toString().contains("error")) {
+        errorMessage = 'There was an error getting your random activity';
+      } else {
+        randomActivityName = json.decode(res.body)['name'];
+      }
     });
   }
 
@@ -79,11 +85,10 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     var res = await http.post(baseUrl + 'activities/delete',
         headers: {'Authorization': 'Bearer ' + authToken},
         body: jsonEncode({
-          'category_name': currentCategoryOpened,
+          'category_name': currentCategoryOpened.name,
           'category_type': widget.categoryType,
           'activity_name': randomActivityName
         }));
-    print(res.body);
     if (res.body.contains('error') ||
         res.body !=
             'Activity deleted '
@@ -125,7 +130,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
               .toLowerCase()
               .replaceAll("-", " ")
               .replaceAll("_", " "))),
-          profilePic(picture),
+          profilePic(picture, context),
           SafeArea(
               child: Padding(
             padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
@@ -133,13 +138,13 @@ class _subCategoryPageState extends State<SubCategoryPage> {
               children: [
                 Expanded(
                   child: new ListView.builder(
-                      itemCount: widget.subCategories.length,
+                      itemCount: widget.subCategoriesInput.length,
                       itemBuilder: (BuildContext ctxt, int index) {
                         return taskWidget(
                             Color((math.Random().nextDouble() * 0xFFFFFF)
                                     .toInt())
                                 .withOpacity(1.0),
-                            widget.subCategories[index]);
+                            subcategories[index]);
                       }),
                 ),
               ],
@@ -242,7 +247,6 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                                   onTap: () async {
                                     bool deletedActivity =
                                         await deleteActivity();
-                                    print(deletedActivity);
                                     if (deletedActivity) {
                                       closeTaskPop();
                                     } else {
@@ -306,9 +310,8 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CreateActivityPage(
-                            subCategories: widget.subCategories.isNotEmpty
-                                ? widget.subCategories
-                                : [],
+                            subCategories:
+                                subcategories.isNotEmpty ? subcategories : [],
                             categoryType: widget.categoryType,
                           )),
                 );
@@ -328,7 +331,8 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     setState(() {});
   }
 
-  Slidable taskWidget(Color color, String title) {
+  Slidable taskWidget(Color color, Category category) {
+    String title = category.name;
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.3,
@@ -336,9 +340,9 @@ class _subCategoryPageState extends State<SubCategoryPage> {
         onTap: () {
           print(title);
           openTaskPop();
-          getRandomActivity(title);
+          getRandomActivity(category);
           setState(() {
-            currentCategoryOpened = title;
+            currentCategoryOpened = category;
           });
           if (_controllerCenter != null) {
             _controllerCenter.play();
@@ -397,8 +401,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
               context,
               MaterialPageRoute(
                   builder: (context) => EditSubCategoryPage(
-                        categoryName: title,
-                        categoryType: widget.categoryType,
+                        category: category,
                       )),
             );
           },

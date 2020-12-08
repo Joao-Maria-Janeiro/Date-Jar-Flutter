@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/home_page.dart';
 import 'package:date_jar/login_page/components/background.dart';
+import 'package:date_jar/model/Category.dart';
 import 'package:date_jar/signup_page/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,7 +22,6 @@ class CreateActivityPage extends StatefulWidget {
 }
 
 class _CreateActivityState extends State<CreateActivityPage> {
-  String baseUrl = 'http://192.168.1.18:8080/';
   final storage = new FlutterSecureStorage();
   List<DropdownMenuItem<String>> _dropdownMenuItems;
   String _selectedItem;
@@ -31,7 +31,9 @@ class _CreateActivityState extends State<CreateActivityPage> {
   @override
   void initState() {
     super.initState();
-    _dropdownMenuItems = buildDropDownMenuItems(widget.subCategories);
+    _dropdownMenuItems = buildDropDownMenuItems(widget.subCategories
+        .map((category) => category.name.toString())
+        .toList());
     _selectedItem = _dropdownMenuItems[0].value;
   }
 
@@ -42,13 +44,16 @@ class _CreateActivityState extends State<CreateActivityPage> {
 
   Future<bool> createActivity() async {
     if (activityName.isNotEmpty) {
+      int categoryId = 0;
+      for (Category category in widget.subCategories) {
+        if (category.name == _selectedItem) {
+          categoryId = category.id;
+        }
+      }
       String authToken = await storage.read(key: 'auth_token');
       var res = await http.post(baseUrl + 'activities/add',
-          body: jsonEncode({
-            'activity_name': activityName,
-            'category_name': _selectedItem,
-            'category_type': widget.categoryType
-          }),
+          body: jsonEncode(
+              {'activity_name': activityName, 'category_id': categoryId}),
           headers: {'Authorization': 'Bearer ' + authToken});
       if (res.body.isNotEmpty && !res.body.contains("error")) {
         if (res.body != "Activity created successfuly") {
@@ -110,7 +115,7 @@ class _CreateActivityState extends State<CreateActivityPage> {
                 ),
                 child: Row(
                   children: [
-                     Icon(Icons.article_outlined, color: primaryColor),
+//                     Icon(Icons.article_outlined, color: primaryColor),
                     SizedBox(
                       width: size.width * 0.07,
                     ),

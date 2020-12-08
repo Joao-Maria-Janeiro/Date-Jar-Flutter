@@ -28,7 +28,6 @@ class _SignupState extends State<SignupPage> {
   String password2 = "";
   String email = "";
   bool _obscurePassword = true;
-  String baseUrl = 'http://192.168.1.18:8080/';
   final storage = new FlutterSecureStorage();
   File _image;
   AppState state;

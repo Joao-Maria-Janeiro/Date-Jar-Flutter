@@ -15,7 +15,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String baseUrl = 'http://192.168.1.18:8080/';
   Map<String, dynamic> categories = new Map();
   final storage = new FlutterSecureStorage();
   Image picture;
@@ -61,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           pageTitle("Home"),
-          profilePic(picture),
+          profilePic(picture, context),
           SafeArea(
               child: Padding(
             padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),

@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/components/header.dart';
 import 'package:date_jar/home_page/home_page.dart';
+import 'package:date_jar/model/Category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -12,18 +13,15 @@ import 'package:http/http.dart' as http;
 //import 'components/categories_dashboard.dart';
 
 class EditSubCategoryPage extends StatefulWidget {
-  String categoryName;
-  String categoryType;
+  Category category;
 
-  EditSubCategoryPage({Key key, this.categoryName, this.categoryType})
-      : super(key: key);
+  EditSubCategoryPage({Key key, this.category}) : super(key: key);
 
   @override
   _EditSubCategoryPageState createState() => _EditSubCategoryPageState();
 }
 
 class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
-  String baseUrl = 'http://192.168.1.18:8080/';
   List<String> activities = [];
   final storage = new FlutterSecureStorage();
   String authToken;
@@ -50,11 +48,7 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   void getData() async {
     authToken = await storage.read(key: 'auth_token');
     var res = await http.get(
-        baseUrl +
-            'activities/category/' +
-            widget.categoryName +
-            "/type/" +
-            widget.categoryType,
+        baseUrl + 'activities/category/' + widget.category.id.toString(),
         headers: {'Authorization': 'Bearer ' + authToken});
     setState(() {
       List auxActivities = json.decode(res.body);
@@ -84,13 +78,9 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   }
 
   Future<bool> updateCategoryName(String newCategoryName) async {
-    var res = await http.post(
-        baseUrl +
-            'categories/edit/' +
-            widget.categoryName +
-            "/type/" +
-            widget.categoryType,
-        body: jsonEncode({'new_category_name': newCategoryName}),
+    var res = await http.post(baseUrl + 'categories/edit/',
+        body: jsonEncode(
+            {'new_category_name': newCategoryName, 'id': widget.category.id}),
         headers: {'Authorization': 'Bearer ' + authToken});
     if (res.body != "Success") {
       setState(() {
@@ -100,7 +90,7 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
       return false;
     } else {
       setState(() {
-        widget.categoryName = newCategoryName;
+        widget.category.name = newCategoryName;
       });
       return true;
     }
@@ -108,16 +98,11 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
 
   Future<bool> updateActivity(
       String oldActivityName, String newActivityName) async {
-    var res = await http.post(
-        baseUrl +
-            'activities/category/' +
-            widget.categoryName +
-            "/type/" +
-            widget.categoryType +
-            "/activity",
+    var res = await http.post(baseUrl + 'activities/update/',
         body: jsonEncode({
           'new_activity_name': newActivityName,
-          'old_activity_name': oldActivityName
+          'old_activity_name': oldActivityName,
+          'category_id': widget.category.id
         }),
         headers: {'Authorization': 'Bearer ' + authToken});
     if (res.body != "Success") {
@@ -135,8 +120,8 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
     var res = await http.post(baseUrl + 'activities/delete',
         body: jsonEncode({
           'activity_name': activityName,
-          'category_name': widget.categoryName,
-          'category_type': widget.categoryType
+          'category_name': widget.category.name,
+          'category_type': widget.category.type
         }),
         headers: {'Authorization': 'Bearer ' + authToken});
     if (res.body != "Activity deleted successfuly") {
@@ -164,7 +149,7 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
                     child: Row(
                       children: [
                         pageTitle(
-                          widget.categoryName,
+                          widget.category.name,
                         ),
                         InkWell(
                           onTap: () {
@@ -197,7 +182,7 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
                                 fontFamily: 'Montserrat',
                               ),
                               decoration: InputDecoration(
-                                hintText: widget.categoryName,
+                                hintText: widget.category.name,
                               ),
                             ),
                             width: MediaQuery.of(context).size.width * 0.3,
@@ -252,7 +237,7 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
                     ),
                   ),
           ),
-          profilePic(picture),
+          profilePic(picture, context),
           SafeArea(
               child: Padding(
             padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),

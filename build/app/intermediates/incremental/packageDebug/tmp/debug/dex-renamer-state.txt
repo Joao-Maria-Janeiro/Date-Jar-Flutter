@@ -1,4 +1,4 @@
-#Sun Nov 08 22:19:25 WET 2020
+#Tue Dec 08 18:56:36 WET 2020
 base.0=/home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

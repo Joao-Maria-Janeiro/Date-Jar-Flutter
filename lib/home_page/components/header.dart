@@ -1,3 +1,4 @@
+import 'package:date_jar/profile_page/profile_page.dart';
 import 'package:flutter/material.dart';
 
 Widget pageTitle(String title) {
@@ -13,8 +14,8 @@ Widget pageTitle(String title) {
           Text(
             title,
             style: TextStyle(
-                fontSize: 25,
-                fontFamily: 'Montserrat',
+              fontSize: 25,
+              fontFamily: 'Montserrat',
             ),
           ),
           SizedBox(
@@ -26,7 +27,7 @@ Widget pageTitle(String title) {
   );
 }
 
-Widget profilePic(Image picture) {
+Widget profilePic(Image picture, BuildContext context) {
   return Positioned(
     right: 16,
     top: 0,
@@ -36,15 +37,22 @@ Widget profilePic(Image picture) {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          CircleAvatar(
-            radius: 32,
-            backgroundImage: picture == null
-                ? Image
-                .network(
-                "https://img.icons8.com/pastel-glyph/2x/person-male.png")
-                .image
-                : picture.image,
-            backgroundColor: Colors.transparent,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            },
+            child: CircleAvatar(
+              radius: 32,
+              backgroundImage: picture == null
+                  ? Image.network(
+                          "https://img.icons8.com/pastel-glyph/2x/person-male.png")
+                      .image
+                  : picture.image,
+              backgroundColor: Colors.transparent,
+            ),
           ),
           SizedBox(
             width: 16,

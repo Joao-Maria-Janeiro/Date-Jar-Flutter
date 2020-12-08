@@ -18,7 +18,6 @@ class _LoginState extends State<LoginPage> {
   String username;
   String password;
   bool _obscurePassword = true;
-  String baseUrl = 'http://192.168.1.18:8080/';
   final storage = new FlutterSecureStorage();
 
   @override

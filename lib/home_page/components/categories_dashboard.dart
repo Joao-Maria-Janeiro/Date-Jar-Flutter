@@ -102,7 +102,7 @@ class GridDashboard extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => SubCategoryPage(
-                            subCategories:
+                            subCategoriesInput:
                                 categoriesToSubCategories.containsKey(title)
                                     ? categoriesToSubCategories[title]
                                     : [],

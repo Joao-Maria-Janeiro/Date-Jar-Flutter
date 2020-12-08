@@ -20,7 +20,6 @@ class CreateCategoryPage extends StatefulWidget {
 
 class _CreateCategoryState extends State<CreateCategoryPage> {
   String categoryName;
-  String baseUrl = 'http://192.168.1.18:8080/';
   final storage = new FlutterSecureStorage();
 
   @override
@@ -77,10 +76,10 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
                     });
                   },
                   decoration: InputDecoration(
-                       icon: Icon(
-                         Icons.article_outlined,
-                         color: primaryColor,
-                       ),
+//                       icon: Icon(
+//                         Icons.article_outlined,
+//                         color: primaryColor,
+//                       ),
                       hintText: "Category Name"),
                 ),
               ),
