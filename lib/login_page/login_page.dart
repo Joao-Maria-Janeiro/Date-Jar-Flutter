@@ -47,6 +47,7 @@ class _LoginState extends State<LoginPage> {
       if (res.body.isNotEmpty &&
           res.body != "Username and password didn't match") {
         var jsonResponse = json.decode(res.body);
+        await storage.write(key: 'username', value: username);
         await storage.write(key: 'auth_token', value: jsonResponse["token"]);
         await storage.write(key: 'picture', value: jsonResponse["picture"]);
         return true;

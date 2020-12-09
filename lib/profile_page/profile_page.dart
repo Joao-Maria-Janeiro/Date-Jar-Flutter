@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import 'functionality/associate_user.dart';
+
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -15,11 +17,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final storage = new FlutterSecureStorage();
   Image picture;
+  String username = '';
 
   @override
   void initState() {
     super.initState();
-    getProfilePic();
+    getUsername();
   }
 
   @override
@@ -27,15 +30,12 @@ class _ProfilePageState extends State<ProfilePage> {
     super.dispose();
   }
 
-  Future<void> getProfilePic() async {
-    if (await storage.containsKey(key: 'picture')) {
-      String image = await storage.read(key: 'picture');
-      if (image.isNotEmpty) {
-        Uint8List bytes = base64Decode(image);
-        setState(() {
-          picture = new Image.memory(bytes);
-        });
-      }
+  Future<void> getUsername() async {
+    if (await storage.containsKey(key: 'username')) {
+      String usernameRead = await storage.read(key: 'username');
+      setState(() {
+        username = usernameRead;
+      });
     }
   }
 
@@ -72,17 +72,26 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Icon(Icons.person_add),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text('Add your friend'),
-                  ],
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AssociateUserPage()),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(Icons.person_add),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text('Add your friend'),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 15,
@@ -97,6 +106,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 20,
                     ),
                     Text('Remove your friend'),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text('Log Out ' + username),
                   ],
                 ),
               ],

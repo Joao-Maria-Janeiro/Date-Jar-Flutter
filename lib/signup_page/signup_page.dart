@@ -70,6 +70,7 @@ class _SignupState extends State<SignupPage> {
     if (res.body.isNotEmpty && res.body.contains("{")) {
       var jsonResponse = json.decode(res.body);
       try {
+        await storage.write(key: 'username', value: username);
         await storage.write(key: 'auth_token', value: jsonResponse["token"]);
         await storage.write(key: 'picture', value: jsonResponse["picture"]);
       } catch (e) {
