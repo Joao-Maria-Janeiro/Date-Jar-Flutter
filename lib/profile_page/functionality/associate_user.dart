@@ -1,14 +1,13 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:date_jar/constants.dart';
-import 'package:date_jar/home_page/components/header.dart';
+import 'package:date_jar/home_page/home_page.dart';
 import 'package:date_jar/login_page/components/background.dart';
 import 'package:date_jar/login_page/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AssociateUserPage extends StatefulWidget {
   @override
@@ -25,11 +24,32 @@ class _AssociateUserPageState extends State<AssociateUserPage> {
   @override
   void initState() {
     super.initState();
+    getUsername();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future<bool> associateFriend() async {
+    final SharedPreferences prefs = await _prefs;
+    String authToken = prefs.getString('auth_token');
+    var res = await http.post(baseUrl + 'users/associate',
+        headers: {'Authorization': 'Bearer ' + authToken},
+        body: jsonEncode(
+            {'username': username, 'partner_username': friendUsername}));
+    setState(() {
+      if (res.body.toString().contains("error")) {
+        errorMessage = 'There was an error adding your friend, is the '
+            'username correct?';
+      }
+    });
+    if (res.body.toString().contains("error")) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   Future<void> getUsername() async {
@@ -93,16 +113,16 @@ class _AssociateUserPageState extends State<AssociateUserPage> {
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                     color: primaryColor,
                     onPressed: () async {
-//                      bool createdActivity = await createActivity();
-//                      if (createdActivity) {
-//                        Navigator.push(
-//                          context,
-//                          MaterialPageRoute(builder: (context) => MyHomePage()),
-//                        );
-//                      }
+                      bool associatedFriend = await associateFriend();
+                      if (associatedFriend) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                        );
+                      }
                     },
                     child: Text(
-                      "Create Activity",
+                      "Add Friend",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
