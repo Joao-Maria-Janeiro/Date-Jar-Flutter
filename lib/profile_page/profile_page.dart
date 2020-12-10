@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/components/header.dart';
+import 'package:date_jar/login_page/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -18,11 +19,14 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Image picture;
   String username = '';
+  String friendUsername = '';
+  String errorMessage = '';
 
   @override
   void initState() {
     super.initState();
     getUsername();
+    getFriendName();
   }
 
   @override
@@ -40,9 +44,50 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future<void> getFriendName() async {
+    final SharedPreferences prefs = await _prefs;
+    String authToken = prefs.getString('auth_token');
+    var res = await http.get(baseUrl + 'users/friend',
+        headers: {'Authorization': 'Bearer ' + authToken});
+    setState(() {
+      if (res.body.toString().contains("error")) {
+//        errorMessage = 'Error retriving your friend, please login again';
+      } else {
+        friendUsername = res.body.toString();
+        prefs.setString('friendUsername', friendUsername);
+      }
+    });
+  }
+
+  Future<void> removeFriend() async {
+    final SharedPreferences prefs = await _prefs;
+    String authToken = prefs.getString('auth_token');
+    var res = await http.post(baseUrl + 'users/remove-friend',
+        headers: {'Authorization': 'Bearer ' + authToken});
+    setState(() {
+      if (res.body.toString().contains("error")) {
+        errorMessage = 'Error removing your friend, please try again later';
+      } else {
+        friendUsername = '';
+        prefs.remove('friendUsername');
+      }
+    });
+  }
+
+  void logOut() async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.clear();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    var size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -70,59 +115,95 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SafeArea(
               child: Padding(
-            padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AssociateUserPage()),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Icon(Icons.person_add),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text('Add your friend'),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
+                padding: EdgeInsets.only(
+                    top: 90, left: 16, right: 16, bottom: 16),
+                child: Column(
                   children: [
-                    SizedBox(
-                      width: 20,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AssociateUserPage()),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          friendUsername.isEmpty
+                              ? Container(
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Icon(Icons.person_add),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text('Add your friend'),
+                              ],
+                            ),
+                          )
+                              : Container(
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Icon(Icons.person_add),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text('Change ' + friendUsername),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Icon(Icons.clear),
                     SizedBox(
-                      width: 20,
+                      height: 15,
                     ),
-                    Text('Remove your friend'),
+                    InkWell(
+                      onTap: () {
+                        removeFriend();
+                      },
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Icon(Icons.clear),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text('Remove your friend'),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    InkWell(
+                      onTap: () => logOut(),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text('Log Out ' + username),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      errorMessage,
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text('Log Out ' + username),
-                  ],
-                ),
-              ],
-            ),
-          )),
+              )),
         ],
       ),
     );

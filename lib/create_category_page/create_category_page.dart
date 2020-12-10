@@ -35,12 +35,14 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
 
   Future<bool> createCategory() async {
     final SharedPreferences prefs = await _prefs;
+    print(categoryName);
     if (categoryName.isNotEmpty) {
       String authToken = prefs.getString('auth_token');
       var res = await http.post(baseUrl + 'categories/add',
           body:
               jsonEncode({'title': categoryName, 'type': widget.categoryType}),
           headers: {'Authorization': 'Bearer ' + authToken});
+      print(res.body);
       if (res.body.isNotEmpty && !res.body.contains("error")) {
         return true;
       } else {
