@@ -6,7 +6,7 @@ import 'package:date_jar/home_page/components/header.dart';
 import 'package:date_jar/login_page/components/background.dart';
 import 'package:date_jar/login_page/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,7 +16,7 @@ class AssociateUserPage extends StatefulWidget {
 }
 
 class _AssociateUserPageState extends State<AssociateUserPage> {
-  final storage = new FlutterSecureStorage();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Image picture;
   String friendUsername;
   String username;
@@ -33,8 +33,9 @@ class _AssociateUserPageState extends State<AssociateUserPage> {
   }
 
   Future<void> getUsername() async {
-    if (await storage.containsKey(key: 'username')) {
-      String usernameRead = await storage.read(key: 'username');
+    final SharedPreferences prefs = await _prefs;
+    if (prefs.containsKey('username')) {
+      String usernameRead = prefs.getString('username');
       setState(() {
         username = usernameRead;
       });

@@ -7,7 +7,7 @@ import 'package:date_jar/signup_page/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _LoginState extends State<LoginPage> {
   String username;
   String password;
   bool _obscurePassword = true;
-  final storage = new FlutterSecureStorage();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   @override
   void initState() {
@@ -32,7 +32,8 @@ class _LoginState extends State<LoginPage> {
   }
 
   void checkTokenPresentInStorage() async {
-    if (await storage.containsKey(key: 'auth_token')) {
+    final SharedPreferences prefs = await _prefs;
+    if (prefs.containsKey('auth_token')) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyHomePage()),
@@ -41,15 +42,16 @@ class _LoginState extends State<LoginPage> {
   }
 
   Future<bool> login() async {
+    final SharedPreferences prefs = await _prefs;
     if (username.isNotEmpty && password.isNotEmpty) {
       var res = await http.post(baseUrl + 'users/authenticate',
           body: jsonEncode({'username': username, 'password': password}));
       if (res.body.isNotEmpty &&
           res.body != "Username and password didn't match") {
         var jsonResponse = json.decode(res.body);
-        await storage.write(key: 'username', value: username);
-        await storage.write(key: 'auth_token', value: jsonResponse["token"]);
-        await storage.write(key: 'picture', value: jsonResponse["picture"]);
+        prefs.setString('username', username);
+        prefs.setString('auth_token', jsonResponse["token"]);
+        prefs.setString('picture', jsonResponse["picture"]);
         return true;
       } else {
         return false;

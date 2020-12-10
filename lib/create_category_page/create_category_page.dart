@@ -5,7 +5,7 @@ import 'package:date_jar/home_page/home_page.dart';
 import 'package:date_jar/login_page/components/background.dart';
 import 'package:date_jar/signup_page/signup_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,7 +20,7 @@ class CreateCategoryPage extends StatefulWidget {
 
 class _CreateCategoryState extends State<CreateCategoryPage> {
   String categoryName;
-  final storage = new FlutterSecureStorage();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   @override
   void initState() {
@@ -34,8 +34,9 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
   }
 
   Future<bool> createCategory() async {
+    final SharedPreferences prefs = await _prefs;
     if (categoryName.isNotEmpty) {
-      String authToken = await storage.read(key: 'auth_token');
+      String authToken = prefs.getString('auth_token');
       var res = await http.post(baseUrl + 'categories/add',
           body:
               jsonEncode({'title': categoryName, 'type': widget.categoryType}),

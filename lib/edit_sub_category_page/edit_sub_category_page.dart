@@ -7,7 +7,7 @@ import 'package:date_jar/home_page/components/header.dart';
 import 'package:date_jar/home_page/home_page.dart';
 import 'package:date_jar/model/Category.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 //import 'components/categories_dashboard.dart';
@@ -23,7 +23,7 @@ class EditSubCategoryPage extends StatefulWidget {
 
 class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   List<String> activities = [];
-  final storage = new FlutterSecureStorage();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String authToken;
   Image picture;
   String errorMessage = '';
@@ -46,7 +46,8 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   }
 
   void getData() async {
-    authToken = await storage.read(key: 'auth_token');
+    final SharedPreferences prefs = await _prefs;
+    authToken = prefs.getString('auth_token');
     var res = await http.get(
         baseUrl + 'activities/category/' + widget.category.id.toString(),
         headers: {'Authorization': 'Bearer ' + authToken});
@@ -66,8 +67,9 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   }
 
   Future<void> getProfilePic() async {
-    if (await storage.containsKey(key: 'picture')) {
-      String image = await storage.read(key: 'picture');
+    final SharedPreferences prefs = await _prefs;
+    if (prefs.containsKey('picture')) {
+      String image = prefs.getString('picture');
       if (image.isNotEmpty) {
         Uint8List bytes = base64Decode(image);
         setState(() {

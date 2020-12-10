@@ -9,7 +9,7 @@ import 'package:date_jar/create_category_page/create_category_page.dart';
 import 'package:date_jar/edit_sub_category_page/edit_sub_category_page.dart';
 import 'package:date_jar/home_page/components/header.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:confetti/confetti.dart';
@@ -28,7 +28,8 @@ class SubCategoryPage extends StatefulWidget {
 }
 
 class _subCategoryPageState extends State<SubCategoryPage> {
-  final storage = new FlutterSecureStorage();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   List<Category> subcategories = [];
   Image picture;
   bool activityPop = false;
@@ -55,8 +56,9 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   }
 
   Future<void> getProfilePic() async {
-    if (await storage.containsKey(key: 'picture')) {
-      String image = await storage.read(key: 'picture');
+    final SharedPreferences prefs = await _prefs;
+    if (prefs.containsKey('picture')) {
+      String image = prefs.getString('picture');
       if (image.isNotEmpty) {
         Uint8List bytes = base64Decode(image);
         setState(() {
@@ -67,7 +69,8 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   }
 
   Future<void> getRandomActivity(Category category) async {
-    String authToken = await storage.read(key: 'auth_token');
+    final SharedPreferences prefs = await _prefs;
+    String authToken = prefs.getString('auth_token');
     var res = await http.get(
         baseUrl + 'activities/random/category/' + category.id.toString(),
         headers: {'Authorization': 'Bearer ' + authToken});
@@ -81,7 +84,8 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   }
 
   Future<bool> deleteActivity() async {
-    String authToken = await storage.read(key: 'auth_token');
+    final SharedPreferences prefs = await _prefs;
+    String authToken = prefs.getString('auth_token');
     var res = await http.post(baseUrl + 'activities/delete',
         headers: {'Authorization': 'Bearer ' + authToken},
         body: jsonEncode({

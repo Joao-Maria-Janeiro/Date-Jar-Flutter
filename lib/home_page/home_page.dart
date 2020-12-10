@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/components/header.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'components/categories_dashboard.dart';
@@ -16,7 +16,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Map<String, dynamic> categories = new Map();
-  final storage = new FlutterSecureStorage();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Image picture;
 
   @override
@@ -32,7 +32,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void getData() async {
-    String authToken = await storage.read(key: 'auth_token');
+    final SharedPreferences prefs = await _prefs;
+    String authToken = prefs.getString('auth_token');
     var res = await http.get(baseUrl + 'categories/all',
         headers: {'Authorization': 'Bearer ' + authToken});
     setState(() {
@@ -41,8 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> getProfilePic() async {
-    if (await storage.containsKey(key: 'picture')) {
-      String image = await storage.read(key: 'picture');
+    final SharedPreferences prefs = await _prefs;
+    if (prefs.containsKey('picture')) {
+      String image = prefs.getString('picture');
       if (image.isNotEmpty) {
         Uint8List bytes = base64Decode(image);
         setState(() {

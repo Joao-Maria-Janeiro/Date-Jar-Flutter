@@ -6,7 +6,7 @@ INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/
 INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:1:1-51:12
 MERGED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml:1:1-51:12
 MERGED from [:image_cropper] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_cropper/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
-MERGED from [:flutter_secure_storage] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_secure_storage/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:shared_preferences] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_image_compress] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_image_compress/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-22:12
 MERGED from [:flutter_plugin_android_lifecycle] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
@@ -123,8 +123,8 @@ INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/
 INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/main/AndroidManifest.xml
 MERGED from [:image_cropper] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_cropper/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:image_cropper] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_cropper/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
-MERGED from [:flutter_secure_storage] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_secure_storage/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
-MERGED from [:flutter_secure_storage] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_secure_storage/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:shared_preferences] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_image_compress] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_image_compress/intermediates/library_manifest/debug/AndroidManifest.xml:6:5-9:55
 MERGED from [:flutter_image_compress] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_image_compress/intermediates/library_manifest/debug/AndroidManifest.xml:6:5-9:55
 MERGED from [:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44

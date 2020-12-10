@@ -5,7 +5,7 @@ import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/home_page.dart';
 import 'package:date_jar/login_page/components/background.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,7 +28,7 @@ class _SignupState extends State<SignupPage> {
   String password2 = "";
   String email = "";
   bool _obscurePassword = true;
-  final storage = new FlutterSecureStorage();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   File _image;
   AppState state;
   String errorMessage = '';
@@ -45,6 +45,7 @@ class _SignupState extends State<SignupPage> {
   }
 
   Future<bool> signup() async {
+    final SharedPreferences prefs = await _prefs;
     if (username.isEmpty ||
         password.isEmpty ||
         email.isEmpty ||
@@ -70,9 +71,9 @@ class _SignupState extends State<SignupPage> {
     if (res.body.isNotEmpty && res.body.contains("{")) {
       var jsonResponse = json.decode(res.body);
       try {
-        await storage.write(key: 'username', value: username);
-        await storage.write(key: 'auth_token', value: jsonResponse["token"]);
-        await storage.write(key: 'picture', value: jsonResponse["picture"]);
+        prefs.setString('username', username);
+        prefs.setString('auth_token', jsonResponse["token"]);
+        prefs.setString('picture', jsonResponse["picture"]);
       } catch (e) {
         return false;
       }
