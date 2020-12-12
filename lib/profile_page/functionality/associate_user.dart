@@ -37,8 +37,7 @@ class _AssociateUserPageState extends State<AssociateUserPage> {
     String authToken = prefs.getString('auth_token');
     var res = await http.post(baseUrl + 'users/associate',
         headers: {'Authorization': 'Bearer ' + authToken},
-        body: jsonEncode(
-            {'partner_username': friendUsername}));
+        body: jsonEncode({'partner_username': friendUsername}));
     setState(() {
       if (res.body.toString().contains("error")) {
         errorMessage = 'There was an error adding your friend, is the '
@@ -48,7 +47,7 @@ class _AssociateUserPageState extends State<AssociateUserPage> {
     if (res.body.toString().contains("error")) {
       return false;
     } else {
-      prefs.setString('friendUsername', friendUsername);
+//      prefs.setString('friendUsername', friendUsername);
       return true;
     }
   }
