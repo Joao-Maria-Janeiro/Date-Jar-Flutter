@@ -37,14 +37,14 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   String randomActivityName = '';
   Category currentCategoryOpened;
   String errorMessage = '';
+  GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
+  Tween<Offset> offset = Tween(begin: Offset(1, 0), end: Offset(0, 0));
 
   @override
   void initState() {
     super.initState();
     getProfilePic();
-    subcategories = (widget.subCategoriesInput as List)
-        .map((category) => Category.fromJson(category))
-        .toList();
+    getData();
     _controllerCenter =
         ConfettiController(duration: const Duration(seconds: 5));
   }
@@ -53,6 +53,23 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   void dispose() {
     super.dispose();
     _controllerCenter.dispose();
+  }
+
+  void getData() async {
+    setState(() {
+      List<Category> subcategoriesAux = (widget.subCategoriesInput as List)
+          .map((category) => Category.fromJson(category))
+          .toList();
+      Future ft = Future(() {});
+      subcategoriesAux.forEach((category) {
+        ft = ft.then((_) {
+          return Future.delayed(const Duration(milliseconds: 100), () {
+            subcategories.add(category);
+            animatedListKey.currentState.insertItem(subcategories.length - 1);
+          });
+        });
+      });
+    });
   }
 
   Future<void> getProfilePic() async {
@@ -78,9 +95,29 @@ class _subCategoryPageState extends State<SubCategoryPage> {
       if (json.decode(res.body).toString().contains("error")) {
         errorMessage = 'There was an error getting your random activity';
       } else {
-        randomActivityName = json.decode(res.body)['name'];
+        if (json.decode(res.body)['name'] != null) {
+          randomActivityName = json.decode(res.body)['name'];
+        } else {
+          randomActivityName = 'No activity yet';
+        }
       }
     });
+  }
+
+  Future<bool> deleteCategory(Category category) async {
+    final SharedPreferences prefs = await _prefs;
+    String authToken = prefs.getString('auth_token');
+    var res = await http.post(baseUrl + 'categories/remove/' + category.name,
+        headers: {'Authorization': 'Bearer ' + authToken},
+        body: jsonEncode({}));
+    print(res.body);
+    if (res.body.contains('error') || res.body != 'Success') {
+      setState(() {
+        errorMessage = 'Error deleting the category';
+      });
+      return false;
+    }
+    return true;
   }
 
   Future<bool> deleteActivity() async {
@@ -141,14 +178,20 @@ class _subCategoryPageState extends State<SubCategoryPage> {
             child: Column(
               children: [
                 Expanded(
-                  child: new ListView.builder(
-                      itemCount: widget.subCategoriesInput.length,
-                      itemBuilder: (BuildContext ctxt, int index) {
-                        return taskWidget(
-                            Color((math.Random().nextDouble() * 0xFFFFFF)
-                                    .toInt())
-                                .withOpacity(1.0),
-                            subcategories[index]);
+                  child: AnimatedList(
+                      initialItemCount: subcategories.length,
+                      key: animatedListKey,
+                      itemBuilder: (BuildContext ctxt, int index, animation) {
+                        return SlideTransition(
+                          position: animation.drive(offset),
+                          child: taskWidget(
+                              Color((math.Random().nextDouble() * 0xFFFFFF)
+                                      .toInt())
+                                  .withOpacity(1.0),
+                              subcategories[index],
+                              index,
+                              ctxt),
+                        );
                       }),
                 ),
               ],
@@ -335,14 +378,14 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     setState(() {});
   }
 
-  Slidable taskWidget(Color color, Category category) {
+  Slidable taskWidget(
+      Color color, Category category, int index, BuildContext ctxt) {
     String title = category.name;
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.3,
       child: GestureDetector(
         onTap: () {
-          print(title);
           openTaskPop();
           getRandomActivity(category);
           setState(() {
@@ -413,7 +456,21 @@ class _subCategoryPageState extends State<SubCategoryPage> {
         IconSlideAction(
           color: Colors.white,
           icon: Icons.delete,
-          onTap: () {},
+          onTap: () async {
+            bool deleted = await deleteCategory(category);
+            print(deleted);
+            if (deleted) {
+              subcategories.removeAt(index);
+              AnimatedList.of(ctxt).removeItem(
+                  index,
+                  (context, animation) => taskWidget(
+                      Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                          .withOpacity(1.0),
+                      category,
+                      index,
+                      ctxt));
+            }
+          },
         )
       ],
     );

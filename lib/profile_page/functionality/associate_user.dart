@@ -115,7 +115,7 @@ class _AssociateUserPageState extends State<AssociateUserPage> {
                     onPressed: () async {
                       bool associatedFriend = await associateFriend();
                       if (associatedFriend) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => MyHomePage()),
                         );

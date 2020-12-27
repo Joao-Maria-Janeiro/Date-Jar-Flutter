@@ -32,12 +32,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void getData() async {
+    await fetchData();
+  }
+
+  Future<void> fetchData() async {
     final SharedPreferences prefs = await _prefs;
     String authToken = prefs.getString('auth_token');
     var res = await http.get(baseUrl + 'categories/all',
         headers: {'Authorization': 'Bearer ' + authToken});
     setState(() {
-      categories = json.decode(res.body);
+      categories = json.decode(utf8.decode(res.bodyBytes));
     });
   }
 
@@ -63,15 +67,21 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           pageTitle("Home"),
           profilePic(picture, context),
-          SafeArea(
-              child: Padding(
-            padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
-            child: Column(
-              children: [
-                GridDashboard(categoriesToSubCategories: categories),
-              ],
-            ),
-          ))
+          RefreshIndicator(
+            onRefresh: fetchData,
+            backgroundColor: primaryColor,
+            color: Colors.white,
+            child: SafeArea(
+                child: Padding(
+              padding:
+                  EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
+              child: Column(
+                children: [
+                  GridDashboard(categoriesToSubCategories: categories),
+                ],
+              ),
+            )),
+          )
         ],
       ),
     );

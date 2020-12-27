@@ -46,8 +46,10 @@ class _LoginState extends State<LoginPage> {
     if (username.isNotEmpty && password.isNotEmpty) {
       var res = await http.post(baseUrl + 'users/authenticate',
           body: jsonEncode({'username': username, 'password': password}));
+
       if (res.body.isNotEmpty &&
-          res.body != "Username and password didn't match") {
+          res.body != "Username and password didn't match" &&
+          !res.body.contains("error")) {
         var jsonResponse = json.decode(res.body);
         prefs.setString('username', username);
         prefs.setString('auth_token', jsonResponse["token"]);
