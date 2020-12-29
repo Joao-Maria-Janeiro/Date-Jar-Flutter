@@ -338,7 +338,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
         elevation: 15,
         children: [
           SpeedDialChild(
-              // child: Icon(Icons.article_outlined),
+              child: Icon(Icons.article_outlined),
               label: "Add Category",
               onTap: () {
                 Navigator.push(

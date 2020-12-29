@@ -1,17 +1,18 @@
 import 'package:date_jar/sub_category_page/sub_category_page.dart';
 import 'package:flutter/material.dart';
+//import 'package:firebase_admob/firebase_admob.dart';
 
 class GridDashboard extends StatelessWidget {
   Items item1 = new Items(
       title: "Dinning",
       subtitle: "March, Wednesday",
-      event: "3 Events",
+      event: "",
       img: "assets/icons/icons8-dining-room-100.png");
 
   Items item2 = new Items(
     title: "Travel",
     subtitle: "Bocali, Apple",
-    event: "4 Items",
+    event: "",
     img: "assets/icons/icons8-airport-100.png",
   );
   Items item3 = new Items(
@@ -29,13 +30,13 @@ class GridDashboard extends StatelessWidget {
   Items item5 = new Items(
     title: "Adventure",
     subtitle: "Homework, Design",
-    event: "4 Items",
+    event: "",
     img: "assets/icons/icons8-adventure-100.png",
   );
   Items item6 = new Items(
     title: "Alternative",
     subtitle: "",
-    event: "2 Items",
+    event: "",
     img: "assets/icons/icons8-dice-100.png",
   );
   Items item7 = new Items(
@@ -59,7 +60,7 @@ class GridDashboard extends StatelessWidget {
   Items item10 = new Items(
     title: "Ads",
     subtitle: "Rose favirited your Post",
-    event: "",
+    event: "last",
     img: "assets/images/calendar.png",
   );
 
@@ -110,29 +111,37 @@ class GridDashboard extends StatelessWidget {
                           )),
                 );
               },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset(
-                      data.img,
-                      height: 70,
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      data.title,
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
+              child: data.event.isEmpty
+                  ? Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      elevation: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            data.img,
+                            height: 70,
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            data.title,
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    )
+                  : Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      elevation: 2,
+                      child: Column(
+                        children: [],
+                      )),
             );
           }).toList()),
     );

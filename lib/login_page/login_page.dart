@@ -19,6 +19,7 @@ class _LoginState extends State<LoginPage> {
   String password;
   bool _obscurePassword = true;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -47,18 +48,26 @@ class _LoginState extends State<LoginPage> {
       var res = await http.post(baseUrl + 'users/authenticate',
           body: jsonEncode({'username': username, 'password': password}));
 
-      if (res.body.isNotEmpty &&
-          res.body != "Username and password didn't match" &&
-          !res.body.contains("error")) {
+      if (res.statusCode == 200) {
         var jsonResponse = json.decode(res.body);
         prefs.setString('username', username);
         prefs.setString('auth_token', jsonResponse["token"]);
         prefs.setString('picture', jsonResponse["picture"]);
         return true;
       } else {
+        setState(() {
+          if (res.statusCode == 401) {
+            errorMessage = json.decode(res.body)['message'];
+          } else {
+            errorMessage = "Username and password didn't match";
+          }
+        });
         return false;
       }
     } else {
+      setState(() {
+        errorMessage = 'Username and password must be filled';
+      });
       return false;
     }
   }
@@ -123,6 +132,10 @@ class _LoginState extends State<LoginPage> {
                     border: InputBorder.none,
                   ),
                 ),
+              ),
+              Text(
+                errorMessage.isEmpty ? "" : errorMessage,
+                style: TextStyle(color: Colors.red),
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),

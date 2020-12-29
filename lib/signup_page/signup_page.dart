@@ -28,6 +28,7 @@ class _SignupState extends State<SignupPage> {
   String password2 = "";
   String email = "";
   bool _obscurePassword = true;
+  bool _obscurePassword2 = true;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   File _image;
   AppState state;
@@ -68,7 +69,7 @@ class _SignupState extends State<SignupPage> {
                   _image.path,
                   quality: 20))
         }));
-    if (res.body.isNotEmpty && res.body.contains("{")) {
+    if (res.statusCode == 200) {
       var jsonResponse = json.decode(res.body);
       try {
         prefs.setString('username', username);
@@ -79,8 +80,9 @@ class _SignupState extends State<SignupPage> {
       }
       return true;
     } else {
+      print(res.statusCode);
       setState(() {
-        errorMessage = res.body;
+        errorMessage = json.decode(res.body)["message"];
       });
       return false;
     }
@@ -266,20 +268,20 @@ class _SignupState extends State<SignupPage> {
                       errorMessage = "";
                     }
                   },
-                  obscureText: _obscurePassword,
+                  obscureText: _obscurePassword2,
                   decoration: InputDecoration(
                     hintText: "Repeat Password",
                     icon: Icon(Icons.lock, color: primaryColor),
                     suffixIcon: GestureDetector(
                       child: Icon(
-                        _obscurePassword
+                        _obscurePassword2
                             ? Icons.visibility
                             : Icons.visibility_off,
                         color: primaryColor,
                       ),
                       onTap: () {
                         setState(() {
-                          _obscurePassword = !_obscurePassword;
+                          _obscurePassword2 = !_obscurePassword2;
                         });
                       },
                     ),

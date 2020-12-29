@@ -40,6 +40,9 @@ class _MyHomePageState extends State<MyHomePage> {
     String authToken = prefs.getString('auth_token');
     var res = await http.get(baseUrl + 'categories/all',
         headers: {'Authorization': 'Bearer ' + authToken});
+    if (res.statusCode == 403) {
+      Navigator.pop(context);
+    }
     setState(() {
       categories = json.decode(utf8.decode(res.bodyBytes));
     });
