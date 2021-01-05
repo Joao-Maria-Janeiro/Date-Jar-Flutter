@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math' as math;
+import 'package:date_jar/model/Activity.dart';
 import 'package:date_jar/model/Category.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
@@ -34,7 +35,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   Image picture;
   bool activityPop = false;
   ConfettiController _controllerCenter;
-  String randomActivityName = '';
+  Activity randomActivity;
   Category currentCategoryOpened;
   String errorMessage = '';
   GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
@@ -96,9 +97,9 @@ class _subCategoryPageState extends State<SubCategoryPage> {
         errorMessage = 'There was an error getting your random activity';
       } else {
         if (json.decode(res.body)['name'] != null) {
-          randomActivityName = json.decode(res.body)['name'];
+          randomActivity = Activity.fromJson(json.decode(res.body));
         } else {
-          randomActivityName = 'No activity yet';
+          randomActivity = Activity(0, 'No activity yet', 0);
         }
       }
     });
@@ -107,7 +108,8 @@ class _subCategoryPageState extends State<SubCategoryPage> {
   Future<bool> deleteCategory(Category category) async {
     final SharedPreferences prefs = await _prefs;
     String authToken = prefs.getString('auth_token');
-    var res = await http.post(baseUrl + 'categories/remove/' + category.name,
+    var res = await http.post(
+        baseUrl + 'categories/remove/' + category.id.toString(),
         headers: {'Authorization': 'Bearer ' + authToken},
         body: jsonEncode({}));
     print(res.body);
@@ -126,9 +128,9 @@ class _subCategoryPageState extends State<SubCategoryPage> {
     var res = await http.post(baseUrl + 'activities/delete',
         headers: {'Authorization': 'Bearer ' + authToken},
         body: jsonEncode({
-          'category_name': currentCategoryOpened.name,
+          'category_id': currentCategoryOpened.id,
           'category_type': widget.categoryType,
-          'activity_name': randomActivityName
+          'activity_id': randomActivity.id
         }));
     if (res.body.contains('error') ||
         res.body !=
@@ -218,7 +220,7 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                             ),
                             Text(
                               errorMessage.isEmpty
-                                  ? randomActivityName
+                                  ? randomActivity.name
                                   : errorMessage,
                               style: TextStyle(
                                 fontFamily: 'Montserrat',

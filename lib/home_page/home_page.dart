@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/components/header.dart';
+import 'package:date_jar/login_page/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -41,7 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
     var res = await http.get(baseUrl + 'categories/all',
         headers: {'Authorization': 'Bearer ' + authToken});
     if (res.statusCode == 403) {
-      Navigator.pop(context);
+      prefs.clear();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
     }
     setState(() {
       categories = json.decode(utf8.decode(res.bodyBytes));

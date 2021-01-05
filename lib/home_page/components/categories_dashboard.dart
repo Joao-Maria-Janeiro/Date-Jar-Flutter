@@ -58,10 +58,10 @@ class GridDashboard extends StatelessWidget {
     img: "assets/icons/icons8-party-100.png",
   );
   Items item10 = new Items(
-    title: "Ads",
+    title: "Random",
     subtitle: "Rose favirited your Post",
-    event: "last",
-    img: "assets/images/calendar.png",
+    event: "",
+    img: "assets/icons/icons8-shuffle-100.png",
   );
 
   Map<String, dynamic> categoriesToSubCategories;

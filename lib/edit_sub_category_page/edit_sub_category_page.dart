@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:date_jar/constants.dart';
 import 'package:date_jar/home_page/components/header.dart';
 import 'package:date_jar/home_page/home_page.dart';
+import 'package:date_jar/model/Activity.dart';
 import 'package:date_jar/model/Category.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,7 @@ class EditSubCategoryPage extends StatefulWidget {
 
 class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   List<String> activities = [];
+  List<Activity> activitiesClassList = [];
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String authToken;
   Image picture;
@@ -53,6 +55,9 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
         headers: {'Authorization': 'Bearer ' + authToken});
     setState(() {
       List auxActivities = json.decode(res.body);
+      activitiesClassList = (json.decode(res.body) as List)
+          .map((activity) => Activity.fromJson(activity))
+          .toList();
       Future ft = Future(() {});
       auxActivities.forEach((activity) {
         ft = ft.then((_) {
@@ -119,10 +124,16 @@ class _EditSubCategoryPageState extends State<EditSubCategoryPage> {
   }
 
   Future<bool> deleteActivity(String activityName) async {
+    int activityId = -1;
+    activitiesClassList.forEach((activity) {
+      if (activity.name == activityName) {
+        activityId = activity.id;
+      }
+    });
     var res = await http.post(baseUrl + 'activities/delete',
         body: jsonEncode({
-          'activity_name': activityName,
-          'category_name': widget.category.name,
+          'activity_id': activityId,
+          'category_id': widget.category.id,
           'category_type': widget.category.type
         }),
         headers: {'Authorization': 'Bearer ' + authToken});

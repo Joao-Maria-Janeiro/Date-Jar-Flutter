@@ -34,7 +34,11 @@ class _CreateActivityState extends State<CreateActivityPage> {
     _dropdownMenuItems = buildDropDownMenuItems(widget.subCategories
         .map((category) => category.name.toString())
         .toList());
-    _selectedItem = _dropdownMenuItems[0].value;
+    if (_dropdownMenuItems.isNotEmpty) {
+      _selectedItem = _dropdownMenuItems[0].value;
+    } else {
+      _selectedItem = 'You need to create at least one category';
+    }
   }
 
   @override
@@ -106,76 +110,115 @@ class _CreateActivityState extends State<CreateActivityPage> {
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                width: size.width * 0.8,
-                decoration: BoxDecoration(
-                  color: primaryLightColor,
-                  borderRadius: BorderRadius.circular(29),
-                ),
-                child: Row(
-                  children: [
+              _dropdownMenuItems.isEmpty
+                  ? Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                          width: size.width * 0.8,
+                          decoration: BoxDecoration(
+                            color: primaryLightColor,
+                            borderRadius: BorderRadius.circular(29),
+                          ),
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Icon(Icons.error_outline),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "You need at least one category before creating "
+                                    "an activity",
+                                    overflow: TextOverflow.clip,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                          width: size.width * 0.8,
+                          decoration: BoxDecoration(
+                            color: primaryLightColor,
+                            borderRadius: BorderRadius.circular(29),
+                          ),
+                          child: Row(
+                            children: [
 //                     Icon(Icons.article_outlined, color: primaryColor),
-                    SizedBox(
-                      width: size.width * 0.07,
+                              SizedBox(
+                                width: size.width * 0.07,
+                              ),
+                              DropdownButton<String>(
+                                  value: _selectedItem,
+                                  items: _dropdownMenuItems,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedItem = value;
+                                    });
+                                  }),
+                            ],
+                          ),
+                        ),
+                        TextFieldContainer(
+                          child: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                activityName = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                icon: Icon(
+                                  Icons.star,
+                                  color: primaryColor,
+                                ),
+                                hintText: "Activity Name"),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          width: size.width * 0.8,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(29),
+                            child: FlatButton(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 40),
+                              color: primaryColor,
+                              onPressed: () async {
+                                bool createdActivity = await createActivity();
+                                if (createdActivity) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyHomePage()),
+                                  );
+                                }
+                              },
+                              child: Text(
+                                "Create Activity",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          errorMessage,
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
                     ),
-                    DropdownButton<String>(
-                        value: _selectedItem,
-                        items: _dropdownMenuItems,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedItem = value;
-                          });
-                        }),
-                  ],
-                ),
-              ),
-              TextFieldContainer(
-                child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      activityName = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.star,
-                        color: primaryColor,
-                      ),
-                      hintText: "Activity Name"),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                width: size.width * 0.8,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(29),
-                  child: FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                    color: primaryColor,
-                    onPressed: () async {
-                      bool createdActivity = await createActivity();
-                      if (createdActivity) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
-                        );
-                      }
-                    },
-                    child: Text(
-                      "Create Activity",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                errorMessage,
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
             ],
           ),
         ),
