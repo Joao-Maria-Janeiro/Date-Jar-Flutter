@@ -35,6 +35,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
 
     if (res.statusCode == 200) {
       var jsonResponse = json.decode(res.body);
+      prefs.clear();
       prefs.setString('username', username);
       prefs.setString('auth_token', jsonResponse["token"]);
       prefs.setString('picture', jsonResponse["picture"]);

@@ -52,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
         headers: {'Authorization': 'Bearer ' + authToken});
     setState(() {
       if (res.body.toString().contains("error")) {
-//        errorMessage = 'Error retriving your friend, please login again';
+        errorMessage = 'Error retriving your friend, please login again';
       } else {
         friendUsername = res.body.toString();
         prefs.setString('friendUsername', friendUsername);
@@ -121,6 +121,20 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
             child: Column(
               children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      'Current friend: ' + friendUsername,
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
                 InkWell(
                   onTap: () {
                     Navigator.push(
@@ -129,38 +143,43 @@ class _ProfilePageState extends State<ProfilePage> {
                           builder: (context) => AssociateUserPage()),
                     );
                   },
-                  child: Row(
-                    children: [
-                      friendUsername.isEmpty
-                          ? Container(
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Icon(Icons.person_add),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text('Add your friend'),
-                                ],
+                  child: Container(
+                    child: Row(
+                      children: [
+                        friendUsername.isEmpty
+                            ? Container(
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Icon(Icons.person_add),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text('Add your friend'),
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 40,
+                                    ),
+                                    Icon(Icons.person_add),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      'Change your friend',
+                                      style: TextStyle(fontSize: 17),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            )
-                          : Container(
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Icon(Icons.person_add),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text('Change ' + friendUsername),
-                                ],
-                              ),
-                            ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -175,13 +194,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Row(
                           children: [
                             SizedBox(
-                              width: 20,
+                              width: 40,
                             ),
                             Icon(Icons.clear),
                             SizedBox(
                               width: 20,
                             ),
-                            Text('Remove your friend'),
+                            Text(
+                              'Remove your friend',
+                              style: TextStyle(fontSize: 17),
+                            ),
                           ],
                         ),
                       ),
@@ -195,7 +217,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(
                         width: 20,
                       ),
-                      Text('Log Out ' + username),
+                      Text(
+                        'Log Out ' + username,
+                        style: TextStyle(fontSize: 17),
+                      ),
                     ],
                   ),
                 ),
