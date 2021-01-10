@@ -9,6 +9,7 @@ MERGED from [:image_cropper] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutt
 MERGED from [:shared_preferences] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_image_compress] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_image_compress/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-22:12
+MERGED from [:flutter_string_encryption] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_string_encryption/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:flutter_plugin_android_lifecycle] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [com.github.yalantis:ucrop:2.2.6] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/96c8b63ebe1129065acd632ab7d9b7cf/ucrop-2.2.6/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/7def8d6c3751559765cf68c2d5a2dddd/appcompat-1.1.0/AndroidManifest.xml:17:1-24:12
@@ -34,6 +35,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/joaom
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/b80fad55c42c418cc210e235056767fb/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/fefdd83516e8eeb5097956f9d9af4b04/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/2ca8bc49d3a28fb6fa3bddf429b143ba/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.github.tozny:java-aes-crypto:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/af3108a22c3049f4c7ce286d60929234/java-aes-crypto-1.1.0/AndroidManifest.xml:2:1-12:12
 INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml:1:1-7:12
@@ -59,6 +61,8 @@ MERGED from [androidx.core:core:1.1.0] /home/joaomjaneiro/.gradle/caches/transfo
 MERGED from [androidx.core:core:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/a528b13ac93e64cafa3d0480e2c93207/core-1.1.0/AndroidManifest.xml:24:5-89
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/3a7eb299570065a3866b140e1a95969b/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/3a7eb299570065a3866b140e1a95969b/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
+MERGED from [com.github.tozny:java-aes-crypto:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/af3108a22c3049f4c7ce286d60929234/java-aes-crypto-1.1.0/AndroidManifest.xml:10:5-20
+MERGED from [com.github.tozny:java-aes-crypto:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/af3108a22c3049f4c7ce286d60929234/java-aes-crypto-1.1.0/AndroidManifest.xml:10:5-20
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/a528b13ac93e64cafa3d0480e2c93207/core-1.1.0/AndroidManifest.xml:24:18-86
 	android:label
@@ -129,6 +133,8 @@ MERGED from [:flutter_image_compress] /home/joaomjaneiro/Documents/Flutter/Date-
 MERGED from [:flutter_image_compress] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_image_compress/intermediates/library_manifest/debug/AndroidManifest.xml:6:5-9:55
 MERGED from [:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:image_picker] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:flutter_string_encryption] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_string_encryption/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:flutter_string_encryption] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_string_encryption/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:flutter_plugin_android_lifecycle] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [com.github.yalantis:ucrop:2.2.6] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/96c8b63ebe1129065acd632ab7d9b7cf/ucrop-2.2.6/AndroidManifest.xml:7:5-9:41
@@ -179,6 +185,8 @@ MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/joaomjaneiro/.gra
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/fefdd83516e8eeb5097956f9d9af4b04/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.interpolator:interpolator:1.0.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/2ca8bc49d3a28fb6fa3bddf429b143ba/interpolator-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.interpolator:interpolator:1.0.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/2ca8bc49d3a28fb6fa3bddf429b143ba/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.github.tozny:java-aes-crypto:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/af3108a22c3049f4c7ce286d60929234/java-aes-crypto-1.1.0/AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.tozny:java-aes-crypto:1.1.0] /home/joaomjaneiro/.gradle/caches/transforms-2/files-2.1/af3108a22c3049f4c7ce286d60929234/java-aes-crypto-1.1.0/AndroidManifest.xml:6:5-8:41
 INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml
 INJECTED from /home/joaomjaneiro/Documents/Flutter/Date-Jar-Flutter/android/app/src/debug/AndroidManifest.xml
 	tools:overrideLibrary

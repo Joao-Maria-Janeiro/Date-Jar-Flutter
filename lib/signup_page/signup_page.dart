@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:date_jar/confirm_account_page/confirm_account_page.dart';
 import 'package:date_jar/constants.dart';
-import 'package:date_jar/home_page/home_page.dart';
+import 'package:date_jar/secrets.dart';
 import 'package:date_jar/login_page/components/background.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -33,6 +35,7 @@ class _SignupState extends State<SignupPage> {
   File _image;
   AppState state;
   String errorMessage = '';
+  final cryptor = new PlatformStringCryptor();
 
   @override
   void initState() {
@@ -70,17 +73,17 @@ class _SignupState extends State<SignupPage> {
                   quality: 20))
         }));
     if (res.statusCode == 200) {
-      var jsonResponse = json.decode(res.body);
-      try {
-        prefs.setString('username', username);
-        prefs.setString('auth_token', jsonResponse["token"]);
-        prefs.setString('picture', jsonResponse["picture"]);
-      } catch (e) {
-        return false;
-      }
+      await prefs.setString('username', username);
+
+      final String salt = await cryptor.generateSalt();
+      final String key =
+          await cryptor.generateKeyFromPassword(secret_key, salt);
+      final String encrypted = await cryptor.encrypt(password, key);
+      await prefs.setString('password', encrypted);
+
+      await prefs.setString('salt_key', salt);
       return true;
     } else {
-      print(res.statusCode);
       setState(() {
         errorMessage = json.decode(res.body)["message"];
       });
@@ -304,9 +307,10 @@ class _SignupState extends State<SignupPage> {
                     onPressed: () async {
                       bool gotAuthToken = await signup();
                       if (gotAuthToken) {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          MaterialPageRoute(
+                              builder: (context) => ConfirmAccountPage()),
                         );
                       }
                     },

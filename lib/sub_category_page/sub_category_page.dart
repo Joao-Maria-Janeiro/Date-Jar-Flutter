@@ -220,7 +220,9 @@ class _subCategoryPageState extends State<SubCategoryPage> {
                             ),
                             Text(
                               errorMessage.isEmpty
-                                  ? randomActivity.name
+                                  ? randomActivity != null
+                                      ? randomActivity.name
+                                      : 'No activity yet'
                                   : errorMessage,
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
