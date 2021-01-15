@@ -31,33 +31,36 @@ Widget profilePic(Image picture, BuildContext context) {
   return Positioned(
     right: 16,
     top: 0,
-    child: Container(
-      height: 64,
-      margin: EdgeInsets.only(bottom: 20, top: 40),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            },
-            child: CircleAvatar(
-              radius: 32,
-              backgroundImage: picture == null
-                  ? Image.network(
-                          "https://img.icons8.com/pastel-glyph/2x/person-male.png")
-                      .image
-                  : picture.image,
-              backgroundColor: Colors.transparent,
+    child: Hero(
+      tag: 'profile-pic',
+      child: Container(
+        height: 64,
+        margin: EdgeInsets.only(bottom: 20, top: 40),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+              },
+              child: CircleAvatar(
+                radius: 32,
+                backgroundImage: picture == null
+                    ? Image.network(
+                            "https://img.icons8.com/pastel-glyph/2x/person-male.png")
+                        .image
+                    : picture.image,
+                backgroundColor: Colors.transparent,
+              ),
             ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-        ],
+            SizedBox(
+              width: 16,
+            ),
+          ],
+        ),
       ),
     ),
   );

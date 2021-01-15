@@ -51,11 +51,14 @@ class _ProfilePageState extends State<ProfilePage> {
     var res = await http.get(baseUrl + 'users/friend',
         headers: {'Authorization': 'Bearer ' + authToken});
     setState(() {
+      print(res.body);
       if (res.body.toString().contains("error")) {
         errorMessage = 'Error retriving your friend, please login again';
       } else {
-        friendUsername = res.body.toString();
-        prefs.setString('friendUsername', friendUsername);
+        if (res.body.isNotEmpty) {
+          friendUsername = res.body.toString();
+          prefs.setString('friendUsername', friendUsername);
+        }
       }
     });
   }
@@ -91,149 +94,161 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Positioned(
-            left: 20,
-            top: 0,
-            child: Container(
-              height: 80,
-              width: 250,
-              margin: EdgeInsets.only(bottom: 20, top: 60, left: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Profile',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontFamily: 'Montserrat',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SafeArea(
-              child: Padding(
-            padding: EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
+    return Hero(
+      tag: 'profile-pic',
+      flightShuttleBuilder: (BuildContext flightContext,
+              Animation<double> animation,
+              HeroFlightDirection flightDirection,
+              BuildContext fromHeroContext,
+              BuildContext toHeroContext) =>
+          Material(child: toHeroContext.widget),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            Positioned(
+              left: 20,
+              top: 0,
+              child: Container(
+                height: 80,
+                width: 250,
+                margin: EdgeInsets.only(bottom: 20, top: 60, left: 16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
                     Text(
-                      'Current friend: ' + friendUsername,
-                      style: TextStyle(fontSize: 17),
+                      'Profile',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: 'Montserrat',
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AssociateUserPage()),
-                    );
-                  },
-                  child: Container(
-                    child: Row(
-                      children: [
-                        friendUsername.isEmpty
-                            ? Container(
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Icon(Icons.person_add),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text('Add your friend'),
-                                  ],
-                                ),
-                              )
-                            : Container(
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    Icon(Icons.person_add),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text(
-                                      'Change your friend',
-                                      style: TextStyle(fontSize: 17),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                friendUsername.isEmpty
-                    ? Container()
-                    : InkWell(
-                        onTap: () {
-                          removeFriend();
-                        },
-                        child: Row(
+              ),
+            ),
+            SafeArea(
+                child: Padding(
+              padding:
+                  EdgeInsets.only(top: 90, left: 16, right: 16, bottom: 16),
+              child: Column(
+                children: [
+                  friendUsername.isNotEmpty
+                      ? Row(
                           children: [
-                            SizedBox(
-                              width: 40,
-                            ),
-                            Icon(Icons.clear),
                             SizedBox(
                               width: 20,
                             ),
                             Text(
-                              'Remove your friend',
+                              'Current friend: ' + friendUsername,
                               style: TextStyle(fontSize: 17),
                             ),
                           ],
+                        )
+                      : Row(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AssociateUserPage()),
+                      );
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          friendUsername.isEmpty
+                              ? Container(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Icon(Icons.person_add),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text('Add your friend'),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 40,
+                                      ),
+                                      Icon(Icons.person_add),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text(
+                                        'Change your friend',
+                                        style: TextStyle(fontSize: 17),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  friendUsername.isEmpty
+                      ? Container()
+                      : InkWell(
+                          onTap: () {
+                            removeFriend();
+                          },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 40,
+                              ),
+                              Icon(Icons.clear),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                'Remove your friend',
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                SizedBox(
-                  height: 15,
-                ),
-                InkWell(
-                  onTap: () => logOut(),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'Log Out ' + username,
-                        style: TextStyle(fontSize: 17),
-                      ),
-                    ],
+                  SizedBox(
+                    height: 15,
                   ),
-                ),
-                Text(
-                  errorMessage,
-                  style: TextStyle(
-                    color: Colors.red,
+                  InkWell(
+                    onTap: () => logOut(),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          'Log Out ' + username,
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )),
-        ],
+                  Text(
+                    errorMessage,
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+            )),
+          ],
+        ),
       ),
     );
   }
