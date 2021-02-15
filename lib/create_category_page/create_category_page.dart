@@ -79,12 +79,32 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
                     });
                   },
                   decoration: InputDecoration(
-                       icon: Icon(
-                         Icons.article_outlined,
-                         color: primaryColor,
-                       ),
+                      icon: Icon(
+                        Icons.article_outlined,
+                        color: primaryColor,
+                      ),
                       hintText: "Category Name"),
                 ),
+              ),
+//        TODO(joao-maria-janeiro): Use this ListView for the recommendations
+//              ListView(
+//                scrollDirection: Axis.horizontal,
+//                children: [
+//
+//                ],
+//              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 40,
+                  ),
+                  textPill('Under 50', size),
+                  textPill('Crazy fucking adventure', size),
+                  textPill('Over 25', size),
+                  Column(
+                    children: [],
+                  ),
+                ],
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
@@ -116,6 +136,39 @@ class _CreateCategoryState extends State<CreateCategoryPage> {
       ),
     );
   }
+}
+
+Column textPill(String text, Size size) {
+  return Column(
+    children: [
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        width: size.width * 0.4,
+        height: size.height * 0.05,
+        decoration: BoxDecoration(
+          color: primaryLightColor,
+          borderRadius: BorderRadius.circular(29),
+        ),
+        child: Container(
+          child: Row(
+            children: [
+              Icon(Icons.add),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Text(
+                  text,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
 }
 
 class TextFieldContainer extends StatelessWidget {

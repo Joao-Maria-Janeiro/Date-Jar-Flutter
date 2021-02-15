@@ -33,6 +33,12 @@ Widget profilePic(Image picture, BuildContext context) {
     top: 0,
     child: Hero(
       tag: 'profile-pic',
+      flightShuttleBuilder: (BuildContext flightContext,
+              Animation<double> animation,
+              HeroFlightDirection flightDirection,
+              BuildContext fromHeroContext,
+              BuildContext toHeroContext) =>
+          Material(child: toHeroContext.widget),
       child: Container(
         height: 64,
         margin: EdgeInsets.only(bottom: 20, top: 40),
